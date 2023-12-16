@@ -1,13 +1,19 @@
 import { cn, headingFont } from "@/lib/utils";
 import Image from "next/image";
 
-function Logo() {
+interface LogoProps {
+  hideText?: boolean;
+}
+
+function Logo({ hideText }: LogoProps) {
   return (
-    <div className="flex gap-2">
-      <Image src="/logo.svg" alt="Logo" height={30} width={30} />
-      <p className={cn("text-xl font-semibold", headingFont.className)}>
-        WorkOrbit
-      </p>
+    <div className="flex gap-2 items-center">
+      <Image src="/logo.svg" alt="Logo" height={40} width={40} />
+      {hideText ? null : (
+        <p className={cn("text-xl font-semibold", headingFont.className)}>
+          WorkOrbit
+        </p>
+      )}
     </div>
   );
 }

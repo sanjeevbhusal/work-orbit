@@ -8,7 +8,7 @@ function NavBar() {
       <div className="mx-auto max-w-7xl flex justify-between items-center">
         <Logo />
         <div>
-          <Link href="/login">
+          <Link href="/signin">
             <Button variant="outline" size={"sm"}>
               Login
             </Button>
