@@ -25,6 +25,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z
@@ -43,6 +44,7 @@ function CreateWorkspace() {
   const [isCreatingWorkspace, setIsCreatingWorkspace] = useState(false);
   const { toast, toasts } = useToast();
   const [openDialog, setOpenDialog] = useState(false);
+  const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsCreatingWorkspace(true);
@@ -52,6 +54,7 @@ function CreateWorkspace() {
         description: "Workspace created successfully!",
         className: "bg-green-500 text-white ",
       });
+      router.refresh();
     } catch {
       toast({
         description: "Workspace created successfully!",

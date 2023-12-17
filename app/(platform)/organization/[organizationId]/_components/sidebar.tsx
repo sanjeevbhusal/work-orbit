@@ -1,11 +1,15 @@
 import { CreateWorkspace } from "./create-workspace";
+import { ListWorkspaces } from "./list-workspaces";
 
-function Sidebar() {
+async function Sidebar() {
   return (
-    <div className="border-r py-4 pr-4">
-      <div className="flex w-40 items-center justify-between">
-        <h3 className="text-sm text-slate-600">Workspaces</h3>
-        <CreateWorkspace />
+    <div className="border-r py-4 pr-8">
+      <div className="flex flex-col gap-8">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm text-slate-600">Workspaces</h3>
+          <CreateWorkspace />
+        </div>
+        <ListWorkspaces />
       </div>
     </div>
   );
