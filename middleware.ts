@@ -7,15 +7,18 @@ import { NextResponse } from "next/server";
 export default authMiddleware({
   publicRoutes: ["/"],
   afterAuth({ userId, isPublicRoute, orgId }, req) {
-    console.log("after auth ran", userId, orgId, req.url);
     // Handle users who aren't authenticated and try to view the protected page
     if (!userId && !isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }
 
     // Handle user who are authenticated and have a organization.
-    if (userId && orgId && !req.url.includes(`/organization/${orgId}`)) {
-      return NextResponse.redirect(new URL(`/organization/${orgId}`, req.url));
+    if (userId && isPublicRoute) {
+      let path = "/select-organization";
+      if (orgId) {
+        path = `/organization/${orgId}`;
+      }
+      return NextResponse.redirect(new URL(path, req.url));
     }
 
     // Handle user who are authenticated, but donot have a organization.
