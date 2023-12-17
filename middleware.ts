@@ -8,6 +8,7 @@ export default authMiddleware({
   publicRoutes: ["/"],
   afterAuth({ userId, isPublicRoute, orgId }, req) {
     // Handle users who aren't authenticated and try to view the protected page
+
     if (!userId && !isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }

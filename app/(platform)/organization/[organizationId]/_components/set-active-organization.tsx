@@ -16,7 +16,7 @@ function SetActiveOrganization() {
     });
   }, [setActive, organizationId]);
 
-  return <>{organizationId}</>;
+  return <></>;
 }
 
 export { SetActiveOrganization };

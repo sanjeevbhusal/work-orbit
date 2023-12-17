@@ -1,4 +1,5 @@
 import { NavBar } from "./_components/navbar";
+import { SetActiveOrganization } from "./_components/set-active-organization";
 
 export default function OrganizationLayout({
   children,
@@ -6,9 +7,10 @@ export default function OrganizationLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-full">
+    <div className="h-full flex flex-col">
       <NavBar />
-      <div className="pt-4">{children}</div>
+      <SetActiveOrganization />
+      <div className="grow">{children}</div>
     </div>
   );
 }

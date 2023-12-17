@@ -1,21 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { SetActiveOrganization } from "./_components/set-active-organization";
+import { Sidebar } from "./_components/sidebar";
 
-interface OrganizationPageProps {
-  params: {
-    organizationId: string;
-  };
-}
-
-export default function OrganizationPage({
-  params: { organizationId },
-}: OrganizationPageProps) {
+export default function OrganizationPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 md:p-0">
-      <SetActiveOrganization />
-      <Button size={"sm"} variant="primary" className="ml-auto block">
-        Create Task
-      </Button>
+    <div className="h-full mx-auto max-w-7xl px-4 xl:p-0 flex justify-between">
+      <Sidebar />
+      <div className="pt-4">
+        <Button size={"sm"} variant="primary">
+          Create Task
+        </Button>
+      </div>
     </div>
   );
 }
