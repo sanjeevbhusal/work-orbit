@@ -39,7 +39,7 @@ export default async function OrganizationPage() {
                   alt="nature picture"
                   // objectFit="cover"
                   fill
-                  className="rounded-lg"
+                  className="rounded-lg "
                 />
               </Link>
             ))
