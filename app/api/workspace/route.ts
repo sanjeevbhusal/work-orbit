@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 
@@ -12,7 +12,6 @@ const formSchema = z.object({
 
 async function POST(request: NextRequest) {
   const payload = await request.json();
-  const user = await currentUser();
 
   const parsedPayload = formSchema.safeParse(payload);
   if (!parsedPayload.success) {
@@ -26,10 +25,11 @@ async function POST(request: NextRequest) {
 
   const { name } = parsedPayload.data;
 
+  const { userId, orgId } = auth();
+
   const workspace = await db.workspace.create({
     data: {
       name,
-      ownerId: user!.id,
     },
   });
 

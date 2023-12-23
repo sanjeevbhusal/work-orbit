@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@builder.io/react-hydration-overlay": "^0.0.6",
     "@clerk/nextjs": "^4.28.1",
     "@hookform/resolvers": "^3.3.2",
     "@prisma/client": "^5.7.0",

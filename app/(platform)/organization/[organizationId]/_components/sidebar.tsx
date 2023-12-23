@@ -32,61 +32,41 @@ function Sidebar() {
   const pathname = usePathname();
   console.log(pathname);
   return (
-    <div className="border-r py-4 pr-8">
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-8 ">
-          {sideBarLinks.map((link) => (
-            <Link href={`${pathname}${link.url}`} key={link.name}>
-              <Button
-                variant={"ghost"}
-                className={cn(
-                  "justify-start gap-4 cursor-pointer font-normal pr-8 text-slate-600",
-                  {
-                    "bg-green-100 text-green-500": pathname.includes(link.url),
-                  }
-                )}
-              >
-                {link.icon}
-                <h3 className="text-sm">{link.name}</h3>
-              </Button>
-            </Link>
-          ))}
-          {/* <Link href="#">
+    <div className="py-4 pr-2 border-r lg:pr-6">
+      <div className="flex-col hidden gap-8 lg:flex">
+        {sideBarLinks.map((link) => (
+          <Link href={`${pathname}${link.url}`} key={link.name}>
             <Button
               variant={"ghost"}
               className={cn(
-                "justify-start gap-4 cursor-pointer font-normal pr-8",
+                "justify-start gap-4 cursor-pointer font-normal pr-8 text-slate-600 w-48 hover:bg-green-50",
                 {
-                  "bg-green-100": pathname.includes("/organization"),
+                  "bg-green-100 text-green-500": pathname.includes(link.url),
                 }
               )}
             >
-              <BsListTask />
-              <h3 className="text-sm text-slate-600">Board</h3>
+              {link.icon}
+              <h3 className="text-sm">{link.name}</h3>
             </Button>
           </Link>
-          <Link href={`${pathname}/activity`}>
-            <Button
-              variant={"ghost"}
-              className="justify-start gap-4 cursor-pointer font-normal pr-8"
-            >
-              <TbActivity />
-              <h3 className="text-sm text-slate-600">Activity</h3>
-            </Button>
-          </Link>
-          <Link href={`${pathname}/settings`}>
-            <Button
-              variant={"ghost"}
-              className="justify-start gap-4 cursor-pointer font-normal pr-8"
-            >
-              <IoSettingsOutline />
-              <h3 className="text-sm text-slate-600">Settings</h3>
-            </Button>
-          </Link> */}
-
-          {/* <CreateWorkspace /> */}
-        </div>
+        ))}
       </div>
+
+      <div className="flex flex-col gap-8 lg:hidden">
+        {sideBarLinks.map((link) => (
+          <Link href={`${pathname}${link.url}`} key={link.name}>
+            <Button
+              variant={"ghost"}
+              className={cn("text-lg hover:bg-green-50", {
+                "bg-green-100 text-green-500": pathname.includes(link.url),
+              })}
+            >
+              {link.icon}
+            </Button>
+          </Link>
+        ))}
+      </div>
+      {/* </div> */}
     </div>
   );
 }
