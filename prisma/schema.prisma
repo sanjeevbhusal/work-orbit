@@ -42,7 +42,7 @@ model Column {
 model Task {
   id       String @id @default(uuid())
   task     String
-  Column   Column @relation(references: [id], fields: [columnId])
+  Column   Column @relation(references: [id], fields: [columnId], onDelete: Cascade)
   columnId String
   index    Int
 }

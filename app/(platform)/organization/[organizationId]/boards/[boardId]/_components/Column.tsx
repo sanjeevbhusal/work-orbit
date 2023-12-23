@@ -4,6 +4,8 @@ import { Task } from "@prisma/client";
 import { useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Card } from "./card";
+import { BsThreeDots } from "react-icons/bs";
+import { ColumnOptions } from "./column-options";
 
 interface ColumnProps {
   id: string;
@@ -16,7 +18,10 @@ function Column({ id, name, tasks }: ColumnProps) {
 
   return (
     <div className="w-96 p-4 bg-white rounded-lg">
-      <h1 className="font-bold text-lg">{name}</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="font-bold text-lg">{name}</h1>
+        <ColumnOptions columnId={id} onTaskAdd={() => setIsTaskAdding(true)} />
+      </div>
       <Droppable droppableId={id}>
         {(provided) => (
           <div
