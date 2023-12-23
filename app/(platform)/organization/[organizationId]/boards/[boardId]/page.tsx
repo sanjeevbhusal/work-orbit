@@ -1,6 +1,7 @@
 import { getBoard } from "@/actions/getBoard";
 import { InvalidPath } from "@/components/InvalidPath";
 import Image from "next/image";
+import { Board } from "./_components/Board";
 
 interface Props {
   params: {
@@ -15,6 +16,8 @@ export default async function Page({ params: { boardId } }: Props) {
     return <InvalidPath />;
   }
 
+  console.log(board);
+
   return (
     <div className="mx-4 h-[calc(100vh-65px)]">
       <div className="mx-auto max-w-7xl relative h-full">
@@ -28,6 +31,7 @@ export default async function Page({ params: { boardId } }: Props) {
           fill
           className="z-[-1]"
         />
+        <Board board={board} />
       </div>
     </div>
   );

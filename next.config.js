@@ -8,6 +8,8 @@ const nextConfig = {
   images: {
     domains: ["images.unsplash.com"],
   },
+  reactStrictMode: false,
+  swcMinify: false,
 };
 
 module.exports = withHydrationOverlay({
