@@ -16,8 +16,6 @@ export default async function Page({ params: { boardId } }: Props) {
     return <InvalidPath />;
   }
 
-  console.log(board);
-
   return (
     <div className="mx-4 h-[calc(100vh-65px)]">
       <div className="mx-auto max-w-7xl relative h-full">
