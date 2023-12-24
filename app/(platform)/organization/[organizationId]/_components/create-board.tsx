@@ -30,8 +30,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { unsplash } from "@/lib/unsplash";
 import Image from "next/image";
-import BoardImage from "@/public/board-image.svg";
+import ColumnsImage from "@/public/board-image.svg";
 import { Label } from "@/components/ui/label";
+import { BoardImage } from "@/lib/types";
 
 const formSchema = z.object({
   boardName: z
@@ -41,17 +42,14 @@ const formSchema = z.object({
 });
 
 interface CreateBoardProps {
-  images: { small: string; big: string }[];
+  images: BoardImage[];
 }
 
 function CreateBoard({ images }: CreateBoardProps) {
   const [showCreateBoardModal, setShowCreateBoardModal] = useState(false);
-  const [backgroundUrls, setBackgroundUrls] =
-    useState<{ small: string; big: string }[]>(images);
-  const [selectedBackgroundUrl, setSelectedBackgroundUrl] = useState<{
-    small: string;
-    big: string;
-  }>(images[0]);
+  const [selectedImage, setSelectedBackgroundUrl] = useState<BoardImage>(
+    images[0]
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,7 +64,7 @@ function CreateBoard({ images }: CreateBoardProps) {
     try {
       await axios.post("/api/board", {
         name: values.boardName,
-        backgroundUrl: selectedBackgroundUrl.big,
+        backgroundUrl: selectedImage.big,
       });
       router.refresh();
       setShowCreateBoardModal(false);
@@ -88,7 +86,7 @@ function CreateBoard({ images }: CreateBoardProps) {
     }
   }
 
-  console.log(selectedBackgroundUrl);
+  console.log(selectedImage);
 
   return (
     <div>
@@ -120,18 +118,18 @@ function CreateBoard({ images }: CreateBoardProps) {
           <DialogHeader>
             <DialogTitle className="text-left">Create Board</DialogTitle>
           </DialogHeader>
-          {selectedBackgroundUrl && (
+          {selectedImage && (
             <div className="px-4 py-2 w-fit rounded-md mx-auto">
               <div className="relative w-[220px] h-[120px] flex items-center justify-center">
                 <Image
-                  src={selectedBackgroundUrl.small}
-                  alt="nature image"
+                  src={selectedImage.small}
+                  alt={selectedImage.description}
                   fill
                   className="rounded-md z-[-1]"
                 />
                 <Image
-                  src={BoardImage}
-                  alt="nature image"
+                  src={ColumnsImage}
+                  alt="Columns inside the Board"
                   width={180}
                   height={180}
                   className="rounded-md"
@@ -142,20 +140,20 @@ function CreateBoard({ images }: CreateBoardProps) {
 
           <Label>Background</Label>
           <div className="flex flex-wrap gap-4">
-            {backgroundUrls.map((url) => (
+            {images.map((image) => (
               <div
-                key={url.small}
-                className="h-12 w-24 relative cursor-pointer flex items-center justify-center"
-                onClick={() => setSelectedBackgroundUrl(url)}
+                key={image.small}
+                className="h-12 w-24 relative cursor-pointer flex items-center justify-center hover:opacity-80"
+                onClick={() => setSelectedBackgroundUrl(image)}
               >
                 <Image
-                  src={url.small}
-                  alt="nature image"
+                  src={image.small}
+                  alt={image.description}
                   fill
                   className="rounded-md"
                 />
 
-                {selectedBackgroundUrl === url && (
+                {selectedImage === image && (
                   <>
                     <div className="absolute inset-0 bg-black/20"></div>
                     <IoCheckmark className="z-20 text-white text-2xl font-bold" />

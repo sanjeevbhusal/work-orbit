@@ -9,7 +9,7 @@ import { getImages } from "@/actions/getImages";
 
 export default async function OrganizationPage() {
   const boards = await getBoards();
-  const images = await getImages("nature");
+  const images = await getImages();
 
   const { orgId } = auth();
 

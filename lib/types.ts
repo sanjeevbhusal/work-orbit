@@ -4,4 +4,10 @@ type BoardWithColumnAndTasks = Board & {
   columns: (Column & { tasks: Task[] })[];
 };
 
-export { BoardWithColumnAndTasks };
+type BoardImage = {
+  description: string;
+  small: string;
+  big: string;
+};
+
+export type { BoardWithColumnAndTasks, BoardImage };
