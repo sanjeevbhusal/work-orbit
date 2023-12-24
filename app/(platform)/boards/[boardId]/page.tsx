@@ -17,8 +17,8 @@ export default async function Page({ params: { boardId } }: Props) {
   }
 
   return (
-    <div className="mx-4 h-[calc(100vh-65px)]">
-      <div className="mx-auto max-w-7xl relative h-full">
+    <div className="h-full">
+      <div className="mx-auto relative h-full">
         <div className="text-white py-2 bg-black/50 px-4">
           <p className="text-lg font-bold">{board.name}</p>
         </div>

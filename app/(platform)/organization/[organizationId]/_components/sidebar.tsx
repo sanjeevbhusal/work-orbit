@@ -1,8 +1,6 @@
 "use client";
 
 import { BsListTask } from "react-icons/bs";
-import { CreateWorkspace } from "./create-workspace";
-
 import { TbActivity } from "react-icons/tb";
 import { IoSettingsOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
@@ -12,9 +10,9 @@ import { cn } from "@/lib/utils";
 
 const sideBarLinks = [
   {
-    name: "Board",
+    name: "Boards",
     icon: <BsListTask />,
-    url: "/",
+    url: "/boards",
   },
   {
     name: "Activity",
@@ -30,18 +28,19 @@ const sideBarLinks = [
 
 function Sidebar() {
   const pathname = usePathname();
-  console.log(pathname);
+  console.log(pathname, pathname.split("/"));
+
   return (
-    <div className="py-4 pr-2 border-r lg:pr-6">
-      <div className="flex-col hidden gap-8 lg:flex">
+    <div className="py-4 border-r pr-2">
+      <div className="flex-col hidden gap-4 lg:flex">
         {sideBarLinks.map((link) => (
           <Link href={`${pathname}${link.url}`} key={link.name}>
             <Button
               variant={"ghost"}
               className={cn(
-                "justify-start gap-4 cursor-pointer font-normal pr-8 text-slate-600 w-48 hover:bg-green-50",
+                "justify-start gap-2 cursor-pointer font-normal pr-8 w-48 hover:bg-slate-200",
                 {
-                  "bg-green-100 text-green-500": pathname.includes(link.url),
+                  "bg-slate-200": pathname.includes(link.url),
                 }
               )}
             >
@@ -52,13 +51,13 @@ function Sidebar() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-8 lg:hidden">
+      <div className="flex flex-col gap-4 lg:hidden">
         {sideBarLinks.map((link) => (
           <Link href={`${pathname}${link.url}`} key={link.name}>
             <Button
               variant={"ghost"}
-              className={cn("text-lg hover:bg-green-50", {
-                "bg-green-100 text-green-500": pathname.includes(link.url),
+              className={cn("text-lg hover:bg-slate-200", {
+                "bg-slate-200": pathname.includes(link.url),
               })}
             >
               {link.icon}
@@ -66,7 +65,6 @@ function Sidebar() {
           </Link>
         ))}
       </div>
-      {/* </div> */}
     </div>
   );
 }
