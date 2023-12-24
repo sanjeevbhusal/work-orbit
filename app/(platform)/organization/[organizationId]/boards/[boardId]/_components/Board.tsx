@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { Column as BoardColumn } from "./Column";
 import { getBoardColumns, getBoardTasks } from "@/lib/utils";
 import { resetServerContext } from "react-beautiful-dnd";
+import { Button } from "@/components/ui/button";
+import { AddColumn } from "./add-column";
 
 // Without this function, react-beautiful-dnd doesnot work in nextjs
 resetServerContext();
@@ -77,9 +79,9 @@ function Board({ board }: BoardProps) {
   const tasks = getBoardTasks(board);
 
   return (
-    <div className="p-4">
+    <div className="p-4 h-[calc(100%-44px)] overflow-x-auto">
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex gap-8">
+        <div className="flex gap-8 items-start h-full overflow-auto">
           {columns.map((column) => {
             return (
               <BoardColumn
@@ -90,6 +92,8 @@ function Board({ board }: BoardProps) {
               />
             );
           })}
+
+          <AddColumn boardId={board.id} />
         </div>
       </DragDropContext>
     </div>

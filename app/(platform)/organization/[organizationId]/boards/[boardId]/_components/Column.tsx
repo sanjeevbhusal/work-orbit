@@ -17,7 +17,7 @@ function Column({ id, name, tasks }: ColumnProps) {
   const [isTaskAdding, setIsTaskAdding] = useState(false);
 
   return (
-    <div className="w-96 p-4 bg-white rounded-lg">
+    <div className="w-96 p-4 bg-white rounded-lg shrink-0">
       <div className="flex justify-between items-center">
         <h1 className="font-bold text-lg">{name}</h1>
         <ColumnOptions columnId={id} onTaskAdd={() => setIsTaskAdding(true)} />
