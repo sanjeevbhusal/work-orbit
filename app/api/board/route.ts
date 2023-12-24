@@ -10,6 +10,7 @@ const formSchema = z.object({
     .string()
     .min(2, "Workspace Name must be atleast 2 characters")
     .max(50, "Workspace Name cannot be more than 25 characters"),
+  backgroundUrl: z.string(),
 });
 
 async function POST(request: NextRequest) {
@@ -25,7 +26,7 @@ async function POST(request: NextRequest) {
     );
   }
 
-  const { name } = parsedPayload.data;
+  const { name, backgroundUrl } = parsedPayload.data;
 
   const { orgId } = auth();
 
@@ -45,17 +46,11 @@ async function POST(request: NextRequest) {
     );
   }
 
-  const UNSPLASH_CLIENT_ID = process.env.UNSPLASH_CLIENT_ID;
-
-  const response = await axios.get(
-    `https://api.unsplash.com/photos/random?query=nature&client_id=${UNSPLASH_CLIENT_ID}`
-  );
-
   await db.board.create({
     data: {
       name,
       organizationId: orgId as string,
-      imageUrl: response.data.urls.regular,
+      imageUrl: backgroundUrl,
     },
   });
 

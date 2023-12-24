@@ -5,10 +5,11 @@ import { getBoards } from "@/actions/getBoards";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 import Image from "next/image";
+import { getImages } from "@/actions/getImages";
 
 export default async function OrganizationPage() {
   const boards = await getBoards();
-  console.log(boards);
+  const images = await getImages("nature");
 
   const { orgId } = auth();
 
@@ -18,7 +19,7 @@ export default async function OrganizationPage() {
       <div className="pt-4 pl-4 grow">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-semibold">Your Boards</h1>
-          <CreateBoard />
+          <CreateBoard images={images} />
         </div>
         <div className="mt-4 flex gap-8 flex-wrap">
           {boards.length === 0 ? (

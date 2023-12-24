@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { IoCheckmark } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -27,6 +28,10 @@ import { Loader2 } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { unsplash } from "@/lib/unsplash";
+import Image from "next/image";
+import BoardImage from "@/public/board-image.svg";
+import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   boardName: z
@@ -35,9 +40,18 @@ const formSchema = z.object({
     .max(40, "Board Name cannot be more than 40 characters"),
 });
 
-function CreateBoard() {
+interface CreateBoardProps {
+  images: { small: string; big: string }[];
+}
+
+function CreateBoard({ images }: CreateBoardProps) {
   const [showCreateBoardModal, setShowCreateBoardModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [backgroundUrls, setBackgroundUrls] =
+    useState<{ small: string; big: string }[]>(images);
+  const [selectedBackgroundUrl, setSelectedBackgroundUrl] = useState<{
+    small: string;
+    big: string;
+  }>(images[0]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,19 +60,14 @@ function CreateBoard() {
     },
   });
   const { toast } = useToast();
-
   const router = useRouter();
 
-  useEffect(() => {
-    setTimeout(() => {
-      router.refresh();
-    }, 2000);
-  }, []);
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
     try {
-      await axios.post("/api/board", { name: values.boardName });
+      await axios.post("/api/board", {
+        name: values.boardName,
+        backgroundUrl: selectedBackgroundUrl.big,
+      });
       router.refresh();
       setShowCreateBoardModal(false);
     } catch (e) {
@@ -76,11 +85,10 @@ function CreateBoard() {
         });
         setShowCreateBoardModal(false);
       }
-    } finally {
-      setIsLoading(false);
     }
-    //  Make sure that another board with this name in this workspace doesnot exist. If it does, show the error
   }
+
+  console.log(selectedBackgroundUrl);
 
   return (
     <div>
@@ -111,31 +119,84 @@ function CreateBoard() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="text-left">Create Board</DialogTitle>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="pt-4 space-y-8"
-              >
-                <FormField
-                  control={form.control}
-                  name="boardName"
-                  render={({ field }) => (
-                    <FormItem className="text-left">
-                      <FormLabel>Board Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="shadcn" {...field} />
-                      </FormControl>
-                      <FormDescription>This has to be unique.</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="ml-auto block">
-                  {isLoading ? <Loader2 className="animate-spin" /> : "Create"}
-                </Button>
-              </form>
-            </Form>
           </DialogHeader>
+          {selectedBackgroundUrl && (
+            <div className="px-4 py-2 w-fit rounded-md mx-auto">
+              <div className="relative w-[220px] h-[120px] flex items-center justify-center">
+                <Image
+                  src={selectedBackgroundUrl.small}
+                  alt="nature image"
+                  fill
+                  className="rounded-md z-[-1]"
+                />
+                <Image
+                  src={BoardImage}
+                  alt="nature image"
+                  width={180}
+                  height={180}
+                  className="rounded-md"
+                />
+              </div>
+            </div>
+          )}
+
+          <Label>Background</Label>
+          <div className="flex flex-wrap gap-4">
+            {backgroundUrls.map((url) => (
+              <div
+                key={url.small}
+                className="h-12 w-24 relative cursor-pointer flex items-center justify-center"
+                onClick={() => setSelectedBackgroundUrl(url)}
+              >
+                <Image
+                  src={url.small}
+                  alt="nature image"
+                  fill
+                  className="rounded-md"
+                />
+
+                {selectedBackgroundUrl === url && (
+                  <>
+                    <div className="absolute inset-0 bg-black/20"></div>
+                    <IoCheckmark className="z-20 text-white text-2xl font-bold" />
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="pt-4 space-y-8"
+            >
+              <FormField
+                control={form.control}
+                name="boardName"
+                render={({ field }) => (
+                  <FormItem className="text-left">
+                    <FormLabel>Board Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="shadcn" {...field} />
+                    </FormControl>
+                    <FormDescription>This has to be unique.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="ml-auto flex items-center justify-center"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting && (
+                  <Loader2 className="animate-spin mr-2" />
+                )}
+                Create
+              </Button>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>
