@@ -2,9 +2,8 @@
 
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-import { Board, Column, Task } from "@prisma/client";
 interface BoardProps {
-  board: Board & { columns: (Column & { tasks: Task[] })[] };
+  board: BoardWithColumnAndTasks;
 }
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -13,6 +12,7 @@ import { getBoardColumns, getBoardTasks } from "@/lib/utils";
 import { resetServerContext } from "react-beautiful-dnd";
 import { Button } from "@/components/ui/button";
 import { AddColumn } from "./add-column";
+import { BoardWithColumnAndTasks } from "@/lib/types";
 
 // Without this function, react-beautiful-dnd doesnot work in nextjs
 resetServerContext();

@@ -1,7 +1,8 @@
 import { getBoard } from "@/actions/getBoard";
-import { InvalidPath } from "@/components/InvalidPath";
+
 import Image from "next/image";
 import { Board } from "./_components/Board";
+import { BoardWithColumnAndTasks } from "@/lib/types";
 
 interface Props {
   params: {
@@ -10,27 +11,16 @@ interface Props {
 }
 
 export default async function Page({ params: { boardId } }: Props) {
-  const board = await getBoard(boardId);
-
-  if (!board) {
-    return <InvalidPath />;
-  }
+  const board = (await getBoard(boardId)) as BoardWithColumnAndTasks;
 
   return (
-    <div className="h-full">
-      <div className="mx-auto relative h-full">
-        <div className="text-white py-2 bg-black/50 px-4">
-          <p className="text-lg font-bold">{board.name}</p>
-        </div>
-
-        <Image
-          src={board.imageUrl}
-          alt="nature image"
-          fill
-          className="z-[-1]"
-        />
-        <Board board={board} />
+    <div className="relative grow">
+      <div className="text-white py-2 bg-black/50 px-4">
+        <p className="text-lg font-bold">{board.name}</p>
       </div>
+
+      <Image src={board.imageUrl} alt="nature image" fill className="z-[-1]" />
+      <Board board={board} />
     </div>
   );
 }
