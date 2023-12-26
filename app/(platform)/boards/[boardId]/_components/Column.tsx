@@ -6,6 +6,8 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Card } from "./card";
 import { BsThreeDots } from "react-icons/bs";
 import { ColumnOptions } from "./column-options";
+import { BsPlusLg } from "react-icons/bs";
+import { AddTask } from "./add-task";
 
 interface ColumnProps {
   id: string;
@@ -17,46 +19,26 @@ function Column({ id, name, tasks }: ColumnProps) {
   const [isTaskAdding, setIsTaskAdding] = useState(false);
 
   return (
-    <div className="w-96 p-4 bg-white rounded-lg shrink-0">
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-lg">{name}</h1>
+    <div className="w-96 py-2 bg-[#F5F8FA] rounded-lg shrink-0">
+      <div className="flex justify-between items-center px-4">
+        <h1 className="font-semibold text-md">{name}</h1>
         <ColumnOptions columnId={id} onTaskAdd={() => setIsTaskAdding(true)} />
       </div>
       <Droppable droppableId={id}>
         {(provided) => (
           <div
-            className="flex gap-4 flex-col mt-4"
+            className="flex gap-4 flex-col mt-2 px-4"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
             {tasks.map((task, index) => (
-              <Card key={task.id} id={task.id} index={index} task={task.task} />
+              <Card key={task.id} card={task} index={index} />
             ))}
             {provided.placeholder}
-            {!isTaskAdding && (
-              <Button onClick={() => setIsTaskAdding(true)}>Add a Task</Button>
-            )}
-
-            {isTaskAdding && (
-              <div>
-                <Input placeholder="Enter the title for this task" />
-                <div className="ml-auto w-fit">
-                  <Button variant={"primary"} className="w-fit mt-2">
-                    Add task
-                  </Button>
-                  <Button
-                    variant={"destructive"}
-                    className="w-fit mt-2 ml-2"
-                    onClick={() => setIsTaskAdding(false)}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
         )}
       </Droppable>
+      <AddTask columnId={id} />
     </div>
   );
 }

@@ -1,22 +1,25 @@
 import { Draggable } from "react-beautiful-dnd";
 
+import { EditCard } from "./edit-card";
+import { Task } from "@prisma/client";
+
 interface CardProps {
-  id: string;
-  task: string;
+  card: Task;
   index: number;
 }
 
-function Card({ id, task, index }: CardProps) {
+function Card({ card, index }: CardProps) {
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={card.id} index={index}>
       {(provided) => (
         <div
-          className="p-2 border rounded-lg bg-slate-100 text-md"
+          className="p-2 border rounded-lg bg-white text-sm hover:border-green-500 hover:border-2 flex justify-between items-center cursor-pointer"
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          {task}
+          {card.task}
+          <EditCard card={card} />
         </div>
       )}
     </Draggable>

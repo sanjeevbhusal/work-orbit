@@ -1,7 +1,4 @@
 import { db } from "@/lib/db";
-import { auth, currentUser } from "@clerk/nextjs";
-import { Clerk, User } from "@clerk/nextjs/server";
-import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -44,4 +41,53 @@ async function POST(request: NextRequest, { params: { taskId } }: Params) {
   return NextResponse.json({ ok: true });
 }
 
-export { POST };
+const updateFormSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Task Name cannot be empty")
+    .max(50, "Task Name cannot be more than 50 characters"),
+});
+
+async function PUT(request: NextRequest, { params: { taskId } }: Params) {
+  const payload = await request.json();
+  const parsedPayload = updateFormSchema.safeParse(payload);
+
+  if (!parsedPayload.success) {
+    return NextResponse.json(
+      { error: parsedPayload.error.message },
+      {
+        status: 400,
+      }
+    );
+  }
+
+  const { name } = parsedPayload.data;
+
+  const existingTask = await db.task.findUnique({
+    where: {
+      id: taskId,
+    },
+  });
+
+  if (!existingTask) {
+    return NextResponse.json(
+      { error: "Task not found" },
+      {
+        status: 404,
+      }
+    );
+  }
+
+  await db.task.update({
+    where: {
+      id: taskId,
+    },
+    data: {
+      task: name,
+    },
+  });
+
+  return NextResponse.json({ ok: true });
+}
+
+export { POST, PUT };
