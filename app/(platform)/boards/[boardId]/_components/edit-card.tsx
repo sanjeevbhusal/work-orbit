@@ -36,6 +36,7 @@ import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { DeleteCard } from "./delete-card";
 import { CopyCard } from "./copy-card";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   name: z
@@ -109,7 +110,12 @@ function EditCard({ card }: EditCardProps) {
               />
               <FormMessage />
             </FormItem>
-            <Button className="block mr-auto mt-4">Update Profile</Button>
+            <Button className="mr-auto mt-4">
+              {form.formState.isSubmitting && (
+                <Loader2 className="mr-2 animate-spin" />
+              )}
+              Update Profile
+            </Button>
           </form>
         </Form>
         <DeleteCard cardId={card.id} />
