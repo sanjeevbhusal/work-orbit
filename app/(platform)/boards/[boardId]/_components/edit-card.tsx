@@ -35,6 +35,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { DeleteCard } from "./delete-card";
+import { CopyCard } from "./copy-card";
 
 const formSchema = z.object({
   name: z
@@ -112,6 +113,7 @@ function EditCard({ card }: EditCardProps) {
           </form>
         </Form>
         <DeleteCard cardId={card.id} />
+        <CopyCard card={card} onSuccess={() => setShowSheet(false)} />
       </SheetContent>
     </Sheet>
   );
