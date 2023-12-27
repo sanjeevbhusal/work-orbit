@@ -22,7 +22,11 @@ function Column({ id, name, tasks }: ColumnProps) {
     <div className="w-96 py-2 bg-[#F5F8FA] rounded-lg shrink-0">
       <div className="flex justify-between items-center px-4">
         <h1 className="font-semibold text-md">{name}</h1>
-        <ColumnOptions columnId={id} onTaskAdd={() => setIsTaskAdding(true)} />
+        <ColumnOptions
+          columnId={id}
+          columnName={name}
+          onTaskAdd={() => setIsTaskAdding(true)}
+        />
       </div>
       <Droppable droppableId={id}>
         {(provided) => (

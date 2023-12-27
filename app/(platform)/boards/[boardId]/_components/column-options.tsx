@@ -25,16 +25,23 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { EditColumn } from "./edit-column";
 
 interface ColumnOptionsProps {
   columnId: string;
+  columnName: string;
   onTaskAdd: () => void;
 }
 
-function ColumnOptions({ columnId, onTaskAdd }: ColumnOptionsProps) {
+function ColumnOptions({
+  columnId,
+  columnName,
+  onTaskAdd,
+}: ColumnOptionsProps) {
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
     useState(false);
   const [isDeletingColumn, setIsDeletingColumn] = useState(false);
+  const [isEditingColumn, setIsEditingColumn] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -65,6 +72,13 @@ function ColumnOptions({ columnId, onTaskAdd }: ColumnOptionsProps) {
         <DropdownMenuContent className="w-64">
           <DropdownMenuLabel className="text-center">Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
+
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => setIsEditingColumn(true)}
+          >
+            Edit Column
+          </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer" onClick={onTaskAdd}>
             Add Task
           </DropdownMenuItem>
@@ -100,6 +114,12 @@ function ColumnOptions({ columnId, onTaskAdd }: ColumnOptionsProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <EditColumn
+        columnId={columnId}
+        columnName={columnName}
+        open={isEditingColumn}
+        setOpen={(open) => setIsEditingColumn(open)}
+      />
     </div>
   );
 }
