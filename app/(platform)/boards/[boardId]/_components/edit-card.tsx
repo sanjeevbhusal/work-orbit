@@ -33,6 +33,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { Label } from "@/components/ui/label";
+import { DeleteCard } from "./delete-card";
 
 const formSchema = z.object({
   name: z
@@ -85,29 +87,31 @@ function EditCard({ card }: EditCardProps) {
         <SheetHeader>
           <SheetTitle>{card.task}</SheetTitle>
           <SheetDescription></SheetDescription>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormItem>
-                <FormField
-                  name="name"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Task Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormMessage />
-              </FormItem>
-              <Button className="block mr-auto mt-4">Update Profile</Button>
-            </form>
-          </Form>
         </SheetHeader>
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-2">
+            <FormItem>
+              <FormField
+                name="name"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Task Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormMessage />
+            </FormItem>
+            <Button className="block mr-auto mt-4">Update Profile</Button>
+          </form>
+        </Form>
+        <DeleteCard cardId={card.id} />
       </SheetContent>
     </Sheet>
   );

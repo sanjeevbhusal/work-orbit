@@ -90,4 +90,29 @@ async function PUT(request: NextRequest, { params: { taskId } }: Params) {
   return NextResponse.json({ ok: true });
 }
 
-export { POST, PUT };
+async function DELETE(request: NextRequest, { params: { taskId } }: Params) {
+  const existingTask = await db.task.findUnique({
+    where: {
+      id: taskId,
+    },
+  });
+
+  if (!existingTask) {
+    return NextResponse.json(
+      { error: "Task not found" },
+      {
+        status: 404,
+      }
+    );
+  }
+
+  await db.task.delete({
+    where: {
+      id: taskId,
+    },
+  });
+
+  return NextResponse.json({ ok: true });
+}
+
+export { POST, PUT, DELETE };
