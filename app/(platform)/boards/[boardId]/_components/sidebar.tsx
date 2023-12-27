@@ -55,7 +55,7 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
     //       </Link>
     //     ))} */}
     //   </div><
-    <div className="border-r overflow-y-auto">
+    <div className="border-r overflow-y-auto basis-64">
       <div className="border-b py-4">
         <p className="text-sm font-medium px-4">Current Board</p>
         <Link href={`/boards/${currentBoard.id}`}>

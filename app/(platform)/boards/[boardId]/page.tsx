@@ -14,7 +14,7 @@ export default async function Page({ params: { boardId } }: Props) {
   const board = (await getBoard(boardId)) as BoardWithColumnAndTasks;
 
   return (
-    <div className="relative grow">
+    <div className="relative basis-96 grow overflow-x-auto">
       <div className="text-white py-2 bg-black/50 px-4">
         <p className="text-lg font-bold">{board.name}</p>
       </div>
