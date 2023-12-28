@@ -103,6 +103,8 @@ function CreateBoard() {
         });
         setShowCreateBoardModal(false);
       }
+    } finally {
+      form.reset();
     }
   }
 
