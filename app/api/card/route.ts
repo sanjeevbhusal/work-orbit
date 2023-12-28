@@ -5,8 +5,8 @@ import { z } from "zod";
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, "Task Name cannot be empty")
-    .max(50, "Task Name cannot be more than 50 characters"),
+    .min(1, "Card Name cannot be empty")
+    .max(50, "Card Name cannot be more than 50 characters"),
 });
 
 async function POST(request: NextRequest) {
@@ -26,7 +26,7 @@ async function POST(request: NextRequest) {
       id: columnId,
     },
     select: {
-      tasks: true,
+      cards: true,
     },
   });
 
@@ -53,11 +53,11 @@ async function POST(request: NextRequest) {
 
   const { name } = validatedPayload.data;
 
-  await db.task.create({
+  await db.card.create({
     data: {
-      task: name,
+      name,
       columnId,
-      index: existingColumn.tasks.length + 1,
+      index: existingColumn.cards.length + 1,
     },
   });
 

@@ -1,10 +1,10 @@
 import { Draggable } from "react-beautiful-dnd";
 
 import { EditCard } from "./edit-card";
-import { Task } from "@prisma/client";
+import { Card } from "@prisma/client";
 
 interface CardProps {
-  card: Task;
+  card: Card;
   index: number;
 }
 
@@ -18,7 +18,7 @@ function Card({ card, index }: CardProps) {
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          {card.task}
+          {card.name}
           <EditCard card={card} />
         </div>
       )}

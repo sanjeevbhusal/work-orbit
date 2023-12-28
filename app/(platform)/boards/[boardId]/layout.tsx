@@ -15,8 +15,6 @@ export default async function BoardLayout({
   children,
   params,
 }: BoardLayoutProps) {
-  console.log(params);
-
   const board = await getBoard(params.boardId);
   const allBoards = await getBoards();
 

@@ -15,7 +15,7 @@ async function DELETE(request: NextRequest, { params: { columnId } }: Params) {
       id: columnId,
     },
     include: {
-      tasks: true,
+      cards: true,
     },
   });
 

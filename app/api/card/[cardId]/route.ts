@@ -9,11 +9,11 @@ const formSchema = z.object({
 
 interface Params {
   params: {
-    taskId: string;
+    cardId: string;
   };
 }
 
-async function POST(request: NextRequest, { params: { taskId } }: Params) {
+async function POST(request: NextRequest, { params: { cardId } }: Params) {
   const payload = await request.json();
   const parsedPayload = formSchema.safeParse(payload);
 
@@ -28,9 +28,9 @@ async function POST(request: NextRequest, { params: { taskId } }: Params) {
 
   const { columnId, index } = parsedPayload.data;
 
-  await db.task.update({
+  await db.card.update({
     where: {
-      id: taskId,
+      id: cardId,
     },
     data: {
       columnId,
@@ -44,11 +44,11 @@ async function POST(request: NextRequest, { params: { taskId } }: Params) {
 const updateFormSchema = z.object({
   name: z
     .string()
-    .min(1, "Task Name cannot be empty")
-    .max(50, "Task Name cannot be more than 50 characters"),
+    .min(1, "Card Name cannot be empty")
+    .max(50, "Card Name cannot be more than 50 characters"),
 });
 
-async function PUT(request: NextRequest, { params: { taskId } }: Params) {
+async function PUT(request: NextRequest, { params: { cardId } }: Params) {
   const payload = await request.json();
   const parsedPayload = updateFormSchema.safeParse(payload);
 
@@ -63,52 +63,52 @@ async function PUT(request: NextRequest, { params: { taskId } }: Params) {
 
   const { name } = parsedPayload.data;
 
-  const existingTask = await db.task.findUnique({
+  const existingCard = await db.card.findUnique({
     where: {
-      id: taskId,
+      id: cardId,
     },
   });
 
-  if (!existingTask) {
+  if (!existingCard) {
     return NextResponse.json(
-      { error: "Task not found" },
+      { error: "Card not found" },
       {
         status: 404,
       }
     );
   }
 
-  await db.task.update({
+  await db.card.update({
     where: {
-      id: taskId,
+      id: cardId,
     },
     data: {
-      task: name,
+      name,
     },
   });
 
   return NextResponse.json({ ok: true });
 }
 
-async function DELETE(request: NextRequest, { params: { taskId } }: Params) {
-  const existingTask = await db.task.findUnique({
+async function DELETE(request: NextRequest, { params: { cardId } }: Params) {
+  const existingCard = await db.card.findUnique({
     where: {
-      id: taskId,
+      id: cardId,
     },
   });
 
-  if (!existingTask) {
+  if (!existingCard) {
     return NextResponse.json(
-      { error: "Task not found" },
+      { error: "Card not found" },
       {
         status: 404,
       }
     );
   }
 
-  await db.task.delete({
+  await db.card.delete({
     where: {
-      id: taskId,
+      id: cardId,
     },
   });
 

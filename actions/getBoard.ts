@@ -8,7 +8,7 @@ async function getBoard(boardId: string) {
     include: {
       columns: {
         include: {
-          tasks: true,
+          cards: true,
         },
       },
     },

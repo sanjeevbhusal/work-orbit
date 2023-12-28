@@ -2,25 +2,24 @@
 
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 
-interface BoardProps {
-  board: BoardWithColumnAndTasks;
-}
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Column as BoardColumn } from "./Column";
-import { getBoardColumns, getBoardTasks } from "@/lib/utils";
+import { getBoardColumns, getBoardCards } from "@/lib/utils";
 import { resetServerContext } from "react-beautiful-dnd";
-import { Button } from "@/components/ui/button";
 import { AddColumn } from "./add-column";
-import { BoardWithColumnAndTasks } from "@/lib/types";
+import { BoardWithColumnAndCards } from "@/lib/types";
 
+interface BoardProps {
+  board: BoardWithColumnAndCards;
+}
 // Without this function, react-beautiful-dnd doesnot work in nextjs
 resetServerContext();
 
 function Board({ board }: BoardProps) {
   const router = useRouter();
 
-  async function updateTask({
+  async function updateCard({
     id,
     columnId,
     index,
@@ -30,7 +29,7 @@ function Board({ board }: BoardProps) {
     index: number;
   }) {
     try {
-      axios.post(`/api/task/${id}`, { columnId, index });
+      axios.post(`/api/card/${id}`, { columnId, index });
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -42,7 +41,7 @@ function Board({ board }: BoardProps) {
       return;
     }
 
-    updateTask({
+    updateCard({
       id: draggableId,
       columnId: destination.droppableId,
       index: destination.index,
@@ -76,7 +75,7 @@ function Board({ board }: BoardProps) {
   }
 
   const columns = getBoardColumns(board);
-  const tasks = getBoardTasks(board);
+  const cards = getBoardCards(board);
 
   return (
     <div className="p-4 h-[calc(100%-44px)] overflow-x-auto">
@@ -88,7 +87,7 @@ function Board({ board }: BoardProps) {
                 key={column.id}
                 id={column.id}
                 name={column.name}
-                tasks={tasks[column.id]}
+                cards={cards[column.id]}
               />
             );
           })}

@@ -2,7 +2,7 @@ import { getBoard } from "@/actions/getBoard";
 
 import Image from "next/image";
 import { Board } from "./_components/Board";
-import { BoardWithColumnAndTasks } from "@/lib/types";
+import { BoardWithColumnAndCards } from "@/lib/types";
 
 interface Props {
   params: {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default async function Page({ params: { boardId } }: Props) {
-  const board = (await getBoard(boardId)) as BoardWithColumnAndTasks;
+  const board = (await getBoard(boardId)) as BoardWithColumnAndCards;
 
   return (
     <div className="relative basis-96 grow overflow-x-auto">

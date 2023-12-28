@@ -30,13 +30,13 @@ import { EditColumn } from "./edit-column";
 interface ColumnOptionsProps {
   columnId: string;
   columnName: string;
-  onTaskAdd: () => void;
+  onCardAdd: () => void;
 }
 
 function ColumnOptions({
   columnId,
   columnName,
-  onTaskAdd,
+  onCardAdd,
 }: ColumnOptionsProps) {
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
     useState(false);
@@ -79,8 +79,8 @@ function ColumnOptions({
           >
             Edit Column
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer" onClick={onTaskAdd}>
-            Add Task
+          <DropdownMenuItem className="cursor-pointer" onClick={onCardAdd}>
+            Add Card
           </DropdownMenuItem>
           <DropdownMenuItem
             className="cursor-pointer text-red-500 focus:text-red-500"
@@ -98,7 +98,7 @@ function ColumnOptions({
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              Deleting the column will also delete all the tasks inside it. This
+              Deleting the column will also delete all the cards inside it. This
               action cannot be reversed.
             </AlertDialogDescription>
           </AlertDialogHeader>

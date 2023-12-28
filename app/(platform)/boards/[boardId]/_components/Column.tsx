@@ -1,22 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Task } from "@prisma/client";
+import { Card as CardType } from "@prisma/client";
 import { useState } from "react";
-import { Draggable, Droppable } from "react-beautiful-dnd";
-import { Card } from "./card";
-import { BsThreeDots } from "react-icons/bs";
+import { Droppable } from "react-beautiful-dnd";
+
 import { ColumnOptions } from "./column-options";
-import { BsPlusLg } from "react-icons/bs";
-import { AddTask } from "./add-task";
+import { AddCard } from "./add-card";
+import { Card } from "./card";
 
 interface ColumnProps {
   id: string;
   name: string;
-  tasks: Task[];
+  cards: CardType[];
 }
 
-function Column({ id, name, tasks }: ColumnProps) {
-  const [isTaskAdding, setIsTaskAdding] = useState(false);
+function Column({ id, name, cards }: ColumnProps) {
+  const [isCardAdding, setIsCardAdding] = useState(false);
 
   return (
     <div className="w-96 py-2 bg-[#F5F8FA] rounded-lg shrink-0">
@@ -25,7 +22,7 @@ function Column({ id, name, tasks }: ColumnProps) {
         <ColumnOptions
           columnId={id}
           columnName={name}
-          onTaskAdd={() => setIsTaskAdding(true)}
+          onCardAdd={() => setIsCardAdding(true)}
         />
       </div>
       <Droppable droppableId={id}>
@@ -35,14 +32,14 @@ function Column({ id, name, tasks }: ColumnProps) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {tasks.map((task, index) => (
-              <Card key={task.id} card={task} index={index} />
+            {cards.map((card, index) => (
+              <Card key={card.id} card={card} index={index} />
             ))}
             {provided.placeholder}
           </div>
         )}
       </Droppable>
-      <AddTask columnId={id} />
+      <AddCard columnId={id} />
     </div>
   );
 }

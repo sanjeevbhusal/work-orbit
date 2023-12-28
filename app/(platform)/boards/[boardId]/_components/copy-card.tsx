@@ -1,6 +1,6 @@
 // when you copy a card, you are basically creating the card again. Hence, this is similar to creat-card.
 
-import { Task } from "@prisma/client";
+import { Card } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
@@ -20,23 +20,23 @@ import { useForm } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { BsPlusLg } from "react-icons/bs";
+
 import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, "Task Name cannot be empty")
-    .max(50, "Task Name cannot be more than 50 characters"),
+    .min(1, "Card Name cannot be empty")
+    .max(50, "Card Name cannot be more than 50 characters"),
 });
 
 interface CopyCardProps {
-  card: Task;
+  card: Card;
   onSuccess: () => void;
 }
 
 function CopyCard({ card, onSuccess }: CopyCardProps) {
-  const [showCopyTaskInput, setShowCopyTaskInput] = useState(false);
+  const [showCopyCardInput, setShowCopyCardInput] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,7 +46,7 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
   });
 
   useEffect(() => {
-    form.setValue("name", card.task);
+    form.setValue("name", card.name);
   }, [card]);
 
   const { toast } = useToast();
@@ -55,18 +55,18 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await axios.post(`/api/task?columnId=${card.columnId}`, values);
+      await axios.post(`/api/card?columnId=${card.columnId}`, values);
       // await new Promise((resolve) => setTimeout(resolve, 3000));
       onSuccess();
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while copying the task",
+        description: "Something went wrong while copying the card",
         variant: "destructive",
       });
     } finally {
       form.reset();
-      setShowCopyTaskInput(false);
+      setShowCopyCardInput(false);
     }
   }
 
@@ -76,7 +76,7 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
       <p className="text-xs mt-1">
         The new card will be copied in the same column as this card.
       </p>
-      {showCopyTaskInput ? (
+      {showCopyCardInput ? (
         <div className="mt-2">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -88,7 +88,7 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Enter the title for this task"
+                        placeholder="Enter the title for this card"
                       />
                     </FormControl>
 
@@ -101,12 +101,12 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
                   {form.formState.isSubmitting && (
                     <Loader2 className="animate-spin mr-2" />
                   )}
-                  Copy task
+                  Copy Card
                 </Button>
                 <Button
                   variant={"destructive"}
                   className="text-sm"
-                  onClick={() => setShowCopyTaskInput(false)}
+                  onClick={() => setShowCopyCardInput(false)}
                   disabled={form.formState.isSubmitting}
                   size="sm"
                 >
@@ -118,12 +118,12 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
         </div>
       ) : (
         <Button
-          onClick={() => setShowCopyTaskInput(true)}
+          onClick={() => setShowCopyCardInput(true)}
           variant="primary"
           size="sm"
           className="mt-2"
         >
-          Copy Task
+          Copy Card
         </Button>
       )}
     </div>

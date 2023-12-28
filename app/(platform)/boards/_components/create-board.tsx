@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -85,8 +84,6 @@ function CreateBoard({ images }: CreateBoardProps) {
       }
     }
   }
-
-  console.log(selectedImage);
 
   return (
     <div>

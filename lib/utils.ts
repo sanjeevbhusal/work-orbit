@@ -1,8 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import localFont from "next/font/local";
-import { BoardWithColumnAndTasks } from "./types";
-import { Task } from "@prisma/client";
+import { BoardWithColumnAndCards } from "./types";
+import { Card } from "@prisma/client";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -12,20 +12,20 @@ const headingFont = localFont({
   src: "../public/font.woff2",
 });
 
-function getBoardColumns(board: BoardWithColumnAndTasks) {
+function getBoardColumns(board: BoardWithColumnAndCards) {
   return board.columns.map((column) => ({
     id: column.id,
     name: column.name,
   }));
 }
-function getBoardTasks(board: BoardWithColumnAndTasks) {
-  const tasks: Record<string, Task[]> = {};
+function getBoardCards(board: BoardWithColumnAndCards) {
+  const cards: Record<string, Card[]> = {};
 
   board.columns.forEach((column) => {
-    tasks[column.id] = column.tasks;
+    cards[column.id] = column.cards;
   });
 
-  return tasks;
+  return cards;
 }
 
-export { cn, headingFont, getBoardColumns, getBoardTasks };
+export { cn, headingFont, getBoardColumns, getBoardCards };

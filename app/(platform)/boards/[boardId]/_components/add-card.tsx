@@ -22,16 +22,16 @@ import { BsPlusLg } from "react-icons/bs";
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, "Task Name cannot be empty")
-    .max(50, "Task Name cannot be more than 50 characters"),
+    .min(1, "Card Name cannot be empty")
+    .max(50, "Card Name cannot be more than 50 characters"),
 });
 
 interface AddColumnProps {
   columnId: string;
 }
 
-function AddTask({ columnId }: AddColumnProps) {
-  const [showAddTaskInput, setShowAddTaskInput] = useState(false);
+function AddCard({ columnId }: AddColumnProps) {
+  const [showAddCardInput, setShowAddCardInput] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,22 +46,22 @@ function AddTask({ columnId }: AddColumnProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await axios.post(`/api/task?columnId=${columnId}`, values);
+      await axios.post(`/api/card?columnId=${columnId}`, values);
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while creating the task",
+        description: "Something went wrong while creating the card",
         variant: "destructive",
       });
     } finally {
       form.reset();
-      setShowAddTaskInput(false);
+      setShowAddCardInput(false);
     }
   }
 
   return (
     <div className="mt-4">
-      {showAddTaskInput ? (
+      {showAddCardInput ? (
         <div className="px-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -73,7 +73,7 @@ function AddTask({ columnId }: AddColumnProps) {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Enter the title for this task"
+                        placeholder="Enter the title for this card"
                       />
                     </FormControl>
 
@@ -86,12 +86,12 @@ function AddTask({ columnId }: AddColumnProps) {
                   {form.formState.isSubmitting && (
                     <Loader2 className="animate-spin mr-2" />
                   )}
-                  Add task
+                  Add Card
                 </Button>
                 <Button
                   variant={"destructive"}
                   className="text-sm"
-                  onClick={() => setShowAddTaskInput(false)}
+                  onClick={() => setShowAddCardInput(false)}
                   disabled={form.formState.isSubmitting}
                 >
                   Cancel
@@ -102,16 +102,16 @@ function AddTask({ columnId }: AddColumnProps) {
         </div>
       ) : (
         <Button
-          onClick={() => setShowAddTaskInput(true)}
+          onClick={() => setShowAddCardInput(true)}
           variant="ghost"
           className="justify-start w-full hover:bg-slate-200"
         >
           <BsPlusLg className="mr-2 text-lg" />
-          Add a Task
+          Add a Card
         </Button>
       )}
     </div>
   );
 }
 
-export { AddTask };
+export { AddCard };

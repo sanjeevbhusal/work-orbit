@@ -6,11 +6,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Task } from "@prisma/client";
+
 import { CiEdit } from "react-icons/ci";
 
 interface EditCardProps {
-  card: Task;
+  card: Card;
 }
 
 // Update the card title,
@@ -33,16 +33,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { Label } from "@/components/ui/label";
 import { DeleteCard } from "./delete-card";
 import { CopyCard } from "./copy-card";
 import { Loader2 } from "lucide-react";
+import { Card } from "@prisma/client";
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, "Task Name cannot be empty")
-    .max(50, "Task Name cannot be more than 50 characters"),
+    .min(1, "Card Name cannot be empty")
+    .max(50, "Card Name cannot be more than 50 characters"),
 });
 
 function EditCard({ card }: EditCardProps) {
@@ -56,7 +56,7 @@ function EditCard({ card }: EditCardProps) {
   });
 
   useEffect(() => {
-    form.setValue("name", card.task);
+    form.setValue("name", card.name);
   }, [card]);
 
   const { toast } = useToast();
@@ -65,11 +65,11 @@ function EditCard({ card }: EditCardProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await axios.put(`/api/task/${card.id}`, values);
+      await axios.put(`/api/card/${card.id}`, values);
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while creating the task",
+        description: "Something went wrong while creating the card",
         variant: "destructive",
       });
     } finally {
@@ -87,7 +87,7 @@ function EditCard({ card }: EditCardProps) {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>{card.task}</SheetTitle>
+          <SheetTitle>{card.name}</SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
 
@@ -99,7 +99,7 @@ function EditCard({ card }: EditCardProps) {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Task Name</FormLabel>
+                    <FormLabel>Card Name</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>

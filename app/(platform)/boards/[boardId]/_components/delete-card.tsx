@@ -32,7 +32,7 @@ function DeleteCard({ cardId }: DeleteCardProps) {
   async function deleteCard() {
     setIsDeleting(true);
     try {
-      await axios.delete(`/api/task/${cardId}`);
+      await axios.delete(`/api/card/${cardId}`);
       router.refresh();
     } catch (error) {
       toast({
