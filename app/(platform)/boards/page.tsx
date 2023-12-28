@@ -7,7 +7,7 @@ import Image from "next/image";
 import { NavBar } from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
 
-export default async function OrganizationPage() {
+export default async function BoardPage() {
   const boards = await getBoards();
 
   return (
@@ -38,7 +38,7 @@ export default async function OrganizationPage() {
                     src={board.imageUrl}
                     alt="nature picture"
                     fill
-                    className="rounded-lg "
+                    className="rounded-lg"
                   />
                 </Link>
               ))
