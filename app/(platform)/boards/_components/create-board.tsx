@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,15 +23,15 @@ import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
+import { Loader, Loader2 } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { unsplash } from "@/lib/unsplash";
 import Image from "next/image";
 import ColumnsImage from "@/public/board-image.svg";
 import { Label } from "@/components/ui/label";
 import { BoardImage } from "@/lib/types";
+import { DEFAULT_BOARD_IMAGE_URLS } from "@/lib/constants";
 
 const formSchema = z.object({
   boardName: z
@@ -40,14 +40,13 @@ const formSchema = z.object({
     .max(40, "Board Name cannot be more than 40 characters"),
 });
 
-interface CreateBoardProps {
-  images: BoardImage[];
-}
+function CreateBoard() {
+  const [images, setImages] = useState<BoardImage[]>([]);
+  const [isImagesLoading, setIsImagesLoading] = useState(false);
 
-function CreateBoard({ images }: CreateBoardProps) {
   const [showCreateBoardModal, setShowCreateBoardModal] = useState(false);
-  const [selectedImage, setSelectedBackgroundUrl] = useState<BoardImage>(
-    images[0]
+  const [selectedImage, setSelectedImage] = useState<BoardImage | undefined>(
+    undefined
   );
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -59,11 +58,33 @@ function CreateBoard({ images }: CreateBoardProps) {
   const { toast } = useToast();
   const router = useRouter();
 
+  useEffect(() => {
+    async function fetchImages() {
+      setIsImagesLoading(true);
+      try {
+        const response = await axios.get("/api/images");
+        const images = response.data.data as BoardImage[];
+        setImages(images);
+        setSelectedImage(images[0]);
+      } catch (error) {
+        setImages(DEFAULT_BOARD_IMAGE_URLS);
+        setSelectedImage(DEFAULT_BOARD_IMAGE_URLS[0]);
+      } finally {
+        setIsImagesLoading(false);
+      }
+    }
+
+    if (!showCreateBoardModal) return;
+
+    fetchImages();
+  }, [showCreateBoardModal]);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const image = selectedImage as BoardImage;
     try {
       await axios.post("/api/board", {
         name: values.boardName,
-        backgroundUrl: selectedImage.big,
+        backgroundUrl: image.big,
       });
       router.refresh();
       setShowCreateBoardModal(false);
@@ -136,29 +157,33 @@ function CreateBoard({ images }: CreateBoardProps) {
           )}
 
           <Label>Background</Label>
-          <div className="flex flex-wrap gap-4">
-            {images.map((image) => (
-              <div
-                key={image.small}
-                className="h-12 w-24 relative cursor-pointer flex items-center justify-center hover:opacity-80"
-                onClick={() => setSelectedBackgroundUrl(image)}
-              >
-                <Image
-                  src={image.small}
-                  alt={image.description}
-                  fill
-                  className="rounded-md"
-                />
+          {isImagesLoading ? (
+            <Loader2 className="animate-spin mx-auto" />
+          ) : (
+            <div className="flex flex-wrap gap-4">
+              {images.map((image) => (
+                <div
+                  key={image.small}
+                  className="h-12 w-24 relative cursor-pointer flex items-center justify-center hover:opacity-80"
+                  onClick={() => setSelectedImage(image)}
+                >
+                  <Image
+                    src={image.small}
+                    alt={image.description}
+                    fill
+                    className="rounded-md"
+                  />
 
-                {selectedImage === image && (
-                  <>
-                    <div className="absolute inset-0 bg-black/20"></div>
-                    <IoCheckmark className="z-20 text-white text-2xl font-bold" />
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
+                  {selectedImage === image && (
+                    <>
+                      <div className="absolute inset-0 bg-black/20"></div>
+                      <IoCheckmark className="z-20 text-white text-2xl font-bold" />
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           <Form {...form}>
             <form
@@ -186,7 +211,7 @@ function CreateBoard({ images }: CreateBoardProps) {
               <Button
                 type="submit"
                 className="ml-auto flex items-center justify-center"
-                disabled={form.formState.isSubmitting}
+                disabled={form.formState.isSubmitting || !selectedImage}
               >
                 {form.formState.isSubmitting && (
                   <Loader2 className="animate-spin mr-2" />

@@ -3,13 +3,12 @@ import { getBoards } from "@/actions/getBoards";
 import Link from "next/link";
 
 import Image from "next/image";
-import { getImages } from "@/actions/getImages";
+
 import { NavBar } from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
 
 export default async function OrganizationPage() {
   const boards = await getBoards();
-  const images = await getImages();
 
   return (
     <div className="h-full">
@@ -19,7 +18,7 @@ export default async function OrganizationPage() {
         <div className="grow py-4 pl-8">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold">Your Boards</h1>
-            <CreateBoard images={images} />
+            <CreateBoard />
           </div>
           <div className="mt-4 flex gap-8 flex-wrap">
             {boards.length === 0 ? (
