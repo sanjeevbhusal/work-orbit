@@ -10,17 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Organization {
-//   id        String   @id @default(uuid())
-//   name      String
-//   ownerId   String
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   boards    Board[]
-// }
-
-// 
-
 model Board {
   id             String   @id @default(uuid())
   name           String
@@ -36,10 +25,10 @@ model Column {
   name    String
   Board   Board  @relation(references: [id], fields: [boardId])
   boardId String
-  tasks   Task[]
+  cards   Card[]
 }
 
-model Task {
+model Card {
   id       String @id @default(uuid())
   task     String
   Column   Column @relation(references: [id], fields: [columnId], onDelete: Cascade)

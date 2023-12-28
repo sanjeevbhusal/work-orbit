@@ -1,7 +1,5 @@
 import { Logo } from "@/components/logo";
-import { Button } from "@/components/ui/button";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
 
 function NavBar() {
   return (
