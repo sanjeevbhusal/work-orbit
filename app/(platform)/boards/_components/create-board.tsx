@@ -172,7 +172,10 @@ function CreateBoard({ images }: CreateBoardProps) {
                   <FormItem className="text-left">
                     <FormLabel>Board Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input
+                        placeholder="Marketing, Software Engineering, Finance etc"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>This has to be unique.</FormDescription>
                     <FormMessage />
