@@ -25,10 +25,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
 import { Loader2 } from "lucide-react";
+import { Column } from "@prisma/client";
 
 interface EditCardProps {
-  columnId: string;
-  columnName: string;
+  column: Column;
+
   open: boolean;
   setOpen: (open: boolean) => void;
 }
@@ -40,7 +41,7 @@ const formSchema = z.object({
     .max(50, "Column Name cannot be more than 50 characters"),
 });
 
-function EditColumn({ columnId, columnName, open, setOpen }: EditCardProps) {
+function EditColumn({ column, open, setOpen }: EditCardProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,8 +50,8 @@ function EditColumn({ columnId, columnName, open, setOpen }: EditCardProps) {
   });
 
   useEffect(() => {
-    form.setValue("name", columnName);
-  }, [form, columnName]);
+    form.setValue("name", column.name);
+  }, [form, column]);
 
   const { toast } = useToast();
 
@@ -58,7 +59,7 @@ function EditColumn({ columnId, columnName, open, setOpen }: EditCardProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await axios.put(`/api/column/${columnId}`, values);
+      await axios.put(`/api/column/${column.id}`, values);
       router.refresh();
     } catch (error) {
       toast({
@@ -76,13 +77,13 @@ function EditColumn({ columnId, columnName, open, setOpen }: EditCardProps) {
       open={open}
       onOpenChange={(open) => {
         // change the form state to default
-        form.setValue("name", columnName);
+        form.setValue("name", column.name);
         setOpen(open);
       }}
     >
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>{columnName}</SheetTitle>
+          <SheetTitle>{column.name}</SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
 

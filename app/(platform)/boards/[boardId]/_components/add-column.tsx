@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { Board } from "@prisma/client";
 
 const formSchema = z.object({
   name: z
@@ -26,10 +27,10 @@ const formSchema = z.object({
 });
 
 interface AddColumnProps {
-  boardId: string;
+  board: Board;
 }
 
-function AddColumn({ boardId }: AddColumnProps) {
+function AddColumn({ board }: AddColumnProps) {
   const [showAddColumnInput, setShowAddColumnInput] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -45,7 +46,7 @@ function AddColumn({ boardId }: AddColumnProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await axios.post(`/api/column?boardId=${boardId}`, values);
+      await axios.post(`/api/column?boardId=${board.id}`, values);
       router.refresh();
     } catch (error) {
       toast({

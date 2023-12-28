@@ -84,15 +84,17 @@ function Board({ board }: BoardProps) {
           {columns.map((column) => {
             return (
               <BoardColumn
+                column={{
+                  ...column,
+                  boardId: board.id,
+                  cards: cards[column.id],
+                }}
                 key={column.id}
-                id={column.id}
-                name={column.name}
-                cards={cards[column.id]}
               />
             );
           })}
 
-          <AddColumn boardId={board.id} />
+          <AddColumn board={board} />
         </div>
       </DragDropContext>
     </div>

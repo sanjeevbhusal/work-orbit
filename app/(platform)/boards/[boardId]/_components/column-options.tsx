@@ -26,18 +26,14 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { EditColumn } from "./edit-column";
+import { Column } from "@prisma/client";
 
 interface ColumnOptionsProps {
-  columnId: string;
-  columnName: string;
+  column: Column;
   onCardAdd: () => void;
 }
 
-function ColumnOptions({
-  columnId,
-  columnName,
-  onCardAdd,
-}: ColumnOptionsProps) {
+function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
     useState(false);
   const [isDeletingColumn, setIsDeletingColumn] = useState(false);
@@ -49,7 +45,7 @@ function ColumnOptions({
   async function deleteColumn() {
     setIsDeletingColumn(true);
     try {
-      await axios.delete(`/api/column/${columnId}`);
+      await axios.delete(`/api/column/${column.id}`);
       router.refresh();
     } catch (error) {
       toast({
@@ -115,8 +111,7 @@ function ColumnOptions({
         </AlertDialogContent>
       </AlertDialog>
       <EditColumn
-        columnId={columnId}
-        columnName={columnName}
+        column={column}
         open={isEditingColumn}
         setOpen={(open) => setIsEditingColumn(open)}
       />

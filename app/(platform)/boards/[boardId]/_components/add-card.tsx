@@ -18,6 +18,7 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { BsPlusLg } from "react-icons/bs";
+import { Column } from "@prisma/client";
 
 const formSchema = z.object({
   name: z
@@ -27,10 +28,10 @@ const formSchema = z.object({
 });
 
 interface AddColumnProps {
-  columnId: string;
+  column: Column;
 }
 
-function AddCard({ columnId }: AddColumnProps) {
+function AddCard({ column }: AddColumnProps) {
   const [showAddCardInput, setShowAddCardInput] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -46,7 +47,7 @@ function AddCard({ columnId }: AddColumnProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await axios.post(`/api/card?columnId=${columnId}`, values);
+      await axios.post(`/api/card?columnId=${column.id}`, values);
       router.refresh();
     } catch (error) {
       toast({

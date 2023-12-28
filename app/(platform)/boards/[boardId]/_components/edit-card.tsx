@@ -118,7 +118,7 @@ function EditCard({ card }: EditCardProps) {
             </Button>
           </form>
         </Form>
-        <DeleteCard cardId={card.id} />
+        <DeleteCard card={card} />
         <CopyCard card={card} onSuccess={() => setShowSheet(false)} />
       </SheetContent>
     </Sheet>

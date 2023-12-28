@@ -12,16 +12,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { Card } from "@prisma/client";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface DeleteCardProps {
-  cardId: string;
+  card: Card;
 }
 
-function DeleteCard({ cardId }: DeleteCardProps) {
+function DeleteCard({ card }: DeleteCardProps) {
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
     useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -32,7 +33,7 @@ function DeleteCard({ cardId }: DeleteCardProps) {
   async function deleteCard() {
     setIsDeleting(true);
     try {
-      await axios.delete(`/api/card/${cardId}`);
+      await axios.delete(`/api/card/${card.id}`);
       router.refresh();
     } catch (error) {
       toast({
