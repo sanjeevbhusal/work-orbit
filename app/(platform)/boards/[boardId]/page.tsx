@@ -19,7 +19,12 @@ export default async function Page({ params: { boardId } }: Props) {
         <p className="text-lg font-bold">{board.name}</p>
       </div>
 
-      <Image src={board.imageUrl} alt="nature image" fill className="z-[-1]" />
+      <Image
+        src={board.largeImageUrl}
+        alt="nature image"
+        fill
+        className="z-[-1]"
+      />
       <Board board={board} />
     </div>
   );

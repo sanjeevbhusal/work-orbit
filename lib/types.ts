@@ -9,7 +9,7 @@ type ColumnWithCards = Column & { cards: Card[] };
 type BoardImage = {
   description: string;
   small: string;
-  big: string;
+  large: string;
 };
 
 export type { BoardWithColumnAndCards, BoardImage, ColumnWithCards };

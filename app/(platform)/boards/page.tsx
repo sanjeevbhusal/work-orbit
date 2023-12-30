@@ -35,7 +35,7 @@ export default async function BoardPage() {
                   <p className="absolute z-40 text-white">{board.name}</p>
 
                   <Image
-                    src={board.imageUrl}
+                    src={board.smallImageUrl}
                     alt="nature picture"
                     fill
                     className="rounded-lg"

@@ -84,7 +84,8 @@ function CreateBoard() {
     try {
       await axios.post("/api/board", {
         name: values.boardName,
-        backgroundUrl: image.big,
+        smallImageUrl: image.small,
+        largeImageUrl: image.large,
       });
       router.refresh();
       setShowCreateBoardModal(false);

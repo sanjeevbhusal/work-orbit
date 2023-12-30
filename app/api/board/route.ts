@@ -10,7 +10,8 @@ const formSchema = z.object({
     .string()
     .min(2, "Workspace Name must be atleast 2 characters")
     .max(50, "Workspace Name cannot be more than 25 characters"),
-  backgroundUrl: z.string(),
+  smallImageUrl: z.string(),
+  largeImageUrl: z.string(),
 });
 
 async function POST(request: NextRequest) {
@@ -26,7 +27,7 @@ async function POST(request: NextRequest) {
     );
   }
 
-  const { name, backgroundUrl } = parsedPayload.data;
+  const { name, smallImageUrl, largeImageUrl } = parsedPayload.data;
 
   const { orgId } = auth();
 
@@ -50,7 +51,8 @@ async function POST(request: NextRequest) {
     data: {
       name,
       organizationId: orgId as string,
-      imageUrl: backgroundUrl,
+      smallImageUrl: smallImageUrl,
+      largeImageUrl: largeImageUrl,
     },
   });
 

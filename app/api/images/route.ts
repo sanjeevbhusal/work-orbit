@@ -14,7 +14,7 @@ export async function GET() {
     return {
       description: result.alt_description,
       small: result.urls.small,
-      big: result.urls.full,
+      large: result.urls.full,
     };
   });
 

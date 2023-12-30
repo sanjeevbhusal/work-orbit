@@ -62,7 +62,7 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
           <div className="flex items-center gap-2 mt-2 hover:bg-slate-200 cursor-pointer py-2 px-4">
             <div className="w-12 h-8 relative ">
               <Image
-                src={currentBoard.imageUrl}
+                src={currentBoard.smallImageUrl}
                 alt={currentBoard.name}
                 fill
                 className="rounded-sm"
@@ -95,7 +95,7 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
               <div className="flex items-center gap-2 mt-2 hover:bg-slate-200 cursor-pointer py-2 px-4">
                 <div className="w-12 h-8 relative ">
                   <Image
-                    src={board.imageUrl}
+                    src={board.smallImageUrl}
                     alt={board.name}
                     fill
                     className="rounded-sm"
