@@ -89,12 +89,13 @@ function CreateBoard() {
       });
       router.refresh();
       setShowCreateBoardModal(false);
+      form.reset();
     } catch (e) {
       const error = e as AxiosError;
+      console.log(error.response);
 
       if (error.response?.status === 409) {
         form.setError("boardName", {
-          type: "manual",
           message: "This board name is already taken.",
         });
       } else {
@@ -104,8 +105,6 @@ function CreateBoard() {
         });
         setShowCreateBoardModal(false);
       }
-    } finally {
-      form.reset();
     }
   }
 
