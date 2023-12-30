@@ -28,9 +28,7 @@ export default async function BoardLayout({
       <div className="mx-auto h-[calc(100%-65px)] flex">
         <Sidebar
           currentBoard={board}
-          otherBoards={allBoards
-            .filter((b) => b.id !== board.id)
-            .concat(allBoards)}
+          otherBoards={allBoards.filter((b) => b.id !== board.id)}
         />
         {children}
       </div>
