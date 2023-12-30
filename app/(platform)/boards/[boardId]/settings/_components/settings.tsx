@@ -144,7 +144,7 @@ function Settings({ board }: SettingsPageProps) {
             {form.formState.isSubmitting && (
               <Loader2 className="mr-2 animate-spin" />
             )}
-            Submit
+            Update Board
           </Button>
         </form>
       </Form>
