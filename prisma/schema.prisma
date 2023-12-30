@@ -13,6 +13,7 @@ datasource db {
 model Board {
   id             String   @id @default(uuid())
   name           String
+  description    String?
   organizationId String
   smallImageUrl  String
   largeImageUrl  String
