@@ -72,7 +72,11 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
             <p className="text-sm text-neutal-500">{currentBoard.name}</p>
           </div>
         </Link>
-        <Link href={`${pathname}/settings`}>
+        <Link
+          href={
+            pathname.includes("/settings") ? pathname : `${pathname}/settings`
+          }
+        >
           <Button
             className={cn(
               "mt-2 flex justify-start gap-2 w-full hover:bg-slate-200",
