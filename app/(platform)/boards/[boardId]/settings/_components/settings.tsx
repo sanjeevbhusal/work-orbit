@@ -21,6 +21,8 @@ import { BoardWithColumnAndCards } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { PageHeading } from "@/components/page-heading";
+import { PageSubheading } from "@/components/page-subheading";
 
 const formSchema = z.object({
   name: z
@@ -98,7 +100,10 @@ function Settings({ board }: SettingsPageProps) {
   }
   return (
     <div className="py-4 px-8">
-      <h1 className="font-bold text-lg">Settings</h1>
+      <PageHeading>Settings</PageHeading>
+      <PageSubheading className="mt-2">
+        Manage your board settings
+      </PageSubheading>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

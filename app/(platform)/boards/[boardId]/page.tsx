@@ -3,6 +3,7 @@ import { getBoard } from "@/actions/getBoard";
 import Image from "next/image";
 import { Board } from "./_components/Board";
 import { BoardWithColumnAndCards } from "@/lib/types";
+import { PageHeading } from "@/components/page-heading";
 
 interface Props {
   params: {
@@ -16,7 +17,7 @@ export default async function Page({ params: { boardId } }: Props) {
   return (
     <div className="relative basis-96 grow overflow-x-auto">
       <div className="text-white py-2 bg-black/50 px-4">
-        <p className="text-lg font-bold">{board.name}</p>
+        <PageHeading>{board.name}</PageHeading>
       </div>
 
       <Image

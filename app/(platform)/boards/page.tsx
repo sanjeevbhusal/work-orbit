@@ -7,6 +7,7 @@ import Image from "next/image";
 import { NavBar } from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
 import { ListBoard } from "./_components/list-board";
+import { PageHeading } from "@/components/page-heading";
 
 export default async function BoardPage() {
   const boards = await getBoards();
@@ -18,7 +19,7 @@ export default async function BoardPage() {
         <Sidebar />
         <div className="grow py-4 pl-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-lg font-semibold">Your Boards</h1>
+            <PageHeading>Your Boards</PageHeading>
             <CreateBoard />
           </div>
           <div className="mt-4">
