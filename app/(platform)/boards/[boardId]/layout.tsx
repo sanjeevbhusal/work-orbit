@@ -23,9 +23,9 @@ export default async function BoardLayout({
   }
 
   return (
-    <div className="h-full">
+    <div className="h-screen">
       <NavBar />
-      <div className="mx-auto min-h-[calc(100%-65px)] flex">
+      <div className="mx-auto h-[calc(100%-65px)] flex">
         <Sidebar
           currentBoard={board}
           otherBoards={allBoards.filter((b) => b.id !== board.id)}

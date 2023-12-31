@@ -15,7 +15,7 @@ function Column({ column }: ColumnProps) {
   const [isCardAdding, setIsCardAdding] = useState(false);
 
   return (
-    <div className="w-96 py-2 bg-[#F5F8FA] rounded-lg shrink-0 h-full flex flex-col">
+    <div className="w-96 py-2 bg-[#F5F8FA] rounded-lg max-h-full shrink-0 flex flex-col">
       <div className="flex justify-between items-center px-4">
         <h1 className="font-semibold text-md">{column.name}</h1>
         <ColumnOptions
@@ -26,7 +26,7 @@ function Column({ column }: ColumnProps) {
       <Droppable droppableId={column.id}>
         {(provided) => (
           <div
-            className="flex gap-4 flex-col mt-2 px-4 overflow-y-auto h-48 grow"
+            className="flex gap-4 flex-col mt-2 px-4 overflow-y-auto"
             {...provided.droppableProps}
             ref={provided.innerRef}
           >

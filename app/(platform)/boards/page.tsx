@@ -13,7 +13,7 @@ export default async function BoardPage() {
   const boards = await getBoards();
 
   return (
-    <div className="h-full">
+    <div className="h-screen">
       <NavBar />
       <div className="px-4 h-[calc(100%-65px)] mx-auto max-w-7xl flex">
         <Sidebar />
