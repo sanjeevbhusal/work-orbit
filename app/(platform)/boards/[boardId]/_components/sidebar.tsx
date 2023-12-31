@@ -37,25 +37,6 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
   console.log({ pathname });
 
   return (
-    // <div className="py-4 border-r pr-2">
-    //   <div className="flex-col hidden gap-4 lg:flex">
-    //     {/* {sideBarLinks.map((link) => (
-    //       <Link href={`${pathname}${link.url}`} key={link.name}>
-    //         <Button
-    //           variant={"ghost"}
-    //           className={cn(
-    //             "justify-start gap-2 cursor-pointer font-normal pr-8 w-48 hover:bg-slate-200",
-    //             {
-    //               "bg-slate-200": pathname.includes(link.url),
-    //             }
-    //           )}
-    //         >
-    //           {link.icon}
-    //           <h3 className="text-sm">{link.name}</h3>
-    //         </Button>
-    //       </Link>
-    //     ))} */}
-    //   </div><
     <div className="border-r overflow-y-auto basis-64">
       <div className="border-b py-4">
         <p className="text-sm font-medium px-4">Current Board</p>
@@ -102,24 +83,30 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
           </Button>
         </Link>
       </div>
-      <div className="border-b py-4">
+      <div className="py-4">
         <p className="text-sm font-medium px-4">Other Boards</p>
         <div className="flex flex-col gap-2">
-          {otherBoards.map((board) => (
-            <Link key={board.id} href={`/boards/${board.id}`}>
-              <div className="flex items-center gap-2 mt-2 hover:bg-slate-200 cursor-pointer py-2 px-4">
-                <div className="w-12 h-8 relative ">
-                  <Image
-                    src={board.smallImageUrl}
-                    alt={board.name}
-                    fill
-                    className="rounded-sm"
-                  />
+          {otherBoards.length === 0 ? (
+            <p className="py-2 px-4 font-semibold text-sm text-neutal-500">
+              No Boards available
+            </p>
+          ) : (
+            otherBoards.map((board) => (
+              <Link key={board.id} href={`/boards/${board.id}`}>
+                <div className="flex items-center gap-2 mt-2 hover:bg-slate-200 cursor-pointer py-2 px-4">
+                  <div className="w-12 h-8 relative ">
+                    <Image
+                      src={board.smallImageUrl}
+                      alt={board.name}
+                      fill
+                      className="rounded-sm"
+                    />
+                  </div>
+                  <p className="text-sm text-neutal-500">{board.name}</p>
                 </div>
-                <p className="text-sm text-neutal-500">{board.name}</p>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))
+          )}
         </div>
       </div>
     </div>
