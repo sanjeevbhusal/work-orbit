@@ -11,15 +11,16 @@ datasource db {
 }
 
 model Board {
-  id             String   @id @default(uuid())
+  id             String          @id @default(uuid())
   name           String
   description    String?
   organizationId String
   smallImageUrl  String
   largeImageUrl  String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   columns        Column[]
+  BoardActivity  BoardActivity[]
 }
 
 model Column {
@@ -36,4 +37,52 @@ model Card {
   Column   Column @relation(references: [id], fields: [columnId], onDelete: Cascade)
   columnId String
   index    Int
+}
+
+// A Activity represents some action that has taken place on a board, card, or column.
+// For example, when a card is moved from one column to another, a new Activity is created.
+// This allows us to keep track of what has happened on a board and when.
+// We should track the user that performs the activity.
+// We should track the time the activity was performed.
+// When a card is moved from one column to another, we should track the column it was moved from and the column it was moved to.
+// When a card is moved from one board to another, we should track the board it was moved from and the board it was moved to.
+
+// When a card is renamed, we should track the existing name and new name. 
+
+// The Type of the entity that the activity is associated with. (Board, Card, Column)
+// The type of the activity that was performed. (Create, Update, Delete, Move)
+// The parent of the entity that the activity is associated with. (Board, Card, Column)
+
+enum EntityType {
+  BOARD
+  CARD
+  COLUMN
+}
+
+enum ActivityType {
+  CREATE
+  UPDATE
+}
+
+enum ActivitySubType {
+  BOARD
+}
+
+model Activity {
+  id            String          @id @default(uuid())
+  createdAt     DateTime        @default(now())
+  userId        String?
+  BoardActivity BoardActivity[]
+  subType       ActivitySubType
+}
+
+model BoardActivity {
+  id           String       @id @default(uuid())
+  Activity     Activity     @relation(fields: [activityId], references: [id])
+  activityId   String
+  boardId      String
+  Board        Board        @relation(fields: [boardId], references: [id])
+  activityType ActivityType
+  currentName  String?
+  previousName String?
 }

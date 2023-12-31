@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Board } from "@prisma/client";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { TbActivity } from "react-icons/tb";
 
 const sideBarLinks = [
   // {
@@ -72,11 +73,7 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
             <p className="text-sm text-neutal-500">{currentBoard.name}</p>
           </div>
         </Link>
-        <Link
-          href={
-            pathname.includes("/settings") ? pathname : `${pathname}/settings`
-          }
-        >
+        <Link href={`/boards/${currentBoard.id}/settings`}>
           <Button
             className={cn(
               "mt-2 flex justify-start gap-2 w-full hover:bg-slate-200",
@@ -88,6 +85,20 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
           >
             <IoSettingsOutline />
             Board Settings
+          </Button>
+        </Link>
+        <Link href={`/boards/${currentBoard.id}/activity`}>
+          <Button
+            className={cn(
+              "mt-2 flex justify-start gap-2 w-full hover:bg-slate-200",
+              {
+                "bg-slate-200": pathname.includes("/activity"),
+              }
+            )}
+            variant="ghost"
+          >
+            <TbActivity />
+            Board Activity
           </Button>
         </Link>
       </div>

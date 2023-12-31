@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
+import { User } from "@clerk/nextjs/server";
+import { ActivitySubType, ActivityType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -86,6 +88,28 @@ export async function PUT(
     data: {
       name,
       description,
+    },
+  });
+
+  // Add activity to the board.
+
+  const user = (await currentUser()) as User;
+
+  const activity = await db.activity.create({
+    data: {
+      userId: user.id,
+      createdAt: new Date(),
+      subType: ActivitySubType.BOARD,
+    },
+  });
+
+  await db.boardActivity.create({
+    data: {
+      activityId: activity.id,
+      boardId,
+      activityType: ActivityType.UPDATE,
+      previousName: board.name,
+      currentName: name,
     },
   });
 

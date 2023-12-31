@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { auth, currentUser } from "@clerk/nextjs";
 import { Clerk, User } from "@clerk/nextjs/server";
+import { ActivitySubType, ActivityType } from "@prisma/client";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -47,12 +48,31 @@ async function POST(request: NextRequest) {
     );
   }
 
-  await db.board.create({
+  const board = await db.board.create({
     data: {
       name,
       organizationId: orgId as string,
       smallImageUrl: smallImageUrl,
       largeImageUrl: largeImageUrl,
+    },
+  });
+
+  const user = (await currentUser()) as User;
+
+  // once the board is created, also create the necessary activity log for this.
+  const activity = await db.activity.create({
+    data: {
+      userId: user.id,
+      createdAt: new Date(),
+      subType: ActivitySubType.BOARD,
+    },
+  });
+  await db.boardActivity.create({
+    data: {
+      activityId: activity.id,
+      boardId: board.id,
+      activityType: ActivityType.CREATE,
+      currentName: board.name,
     },
   });
 
