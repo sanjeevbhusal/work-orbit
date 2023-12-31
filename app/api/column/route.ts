@@ -1,4 +1,7 @@
 import { db } from "@/lib/db";
+import { User } from "@clerk/backend";
+import { currentUser } from "@clerk/nextjs";
+import { ActivitySubType, ActivityType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -50,10 +53,29 @@ async function POST(request: NextRequest) {
 
   const { name } = validatedPayload.data;
 
-  await db.column.create({
+  const column = await db.column.create({
     data: {
       name,
       boardId,
+    },
+  });
+
+  const user = (await currentUser()) as User;
+
+  const activity = await db.activity.create({
+    data: {
+      userId: user.id,
+      subType: ActivitySubType.COLUMN,
+      createdAt: new Date(),
+    },
+  });
+
+  await db.columnActivity.create({
+    data: {
+      activityId: activity.id,
+      activityType: ActivityType.CREATE,
+      columnId: column.id,
+      currentName: column.name,
     },
   });
 

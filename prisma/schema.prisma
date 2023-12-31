@@ -24,11 +24,12 @@ model Board {
 }
 
 model Column {
-  id      String @id @default(uuid())
-  name    String
-  Board   Board  @relation(references: [id], fields: [boardId])
-  boardId String
-  cards   Card[]
+  id             String           @id @default(uuid())
+  name           String
+  Board          Board            @relation(references: [id], fields: [boardId])
+  boardId        String
+  cards          Card[]
+  ColumnActivity ColumnActivity[]
 }
 
 model Card {
@@ -66,14 +67,16 @@ enum ActivityType {
 
 enum ActivitySubType {
   BOARD
+  COLUMN
 }
 
 model Activity {
-  id            String          @id @default(uuid())
-  createdAt     DateTime        @default(now())
-  userId        String?
-  BoardActivity BoardActivity[]
-  subType       ActivitySubType
+  id             String           @id @default(uuid())
+  createdAt      DateTime         @default(now())
+  userId         String?
+  BoardActivity  BoardActivity[]
+  subType        ActivitySubType
+  ColumnActivity ColumnActivity[]
 }
 
 model BoardActivity {
@@ -82,6 +85,17 @@ model BoardActivity {
   activityId   String
   boardId      String
   Board        Board        @relation(fields: [boardId], references: [id])
+  activityType ActivityType
+  currentName  String?
+  previousName String?
+}
+
+model ColumnActivity {
+  id           String       @id @default(uuid())
+  Activity     Activity     @relation(fields: [activityId], references: [id])
+  activityId   String
+  columnId     String
+  Column       Column       @relation(fields: [columnId], references: [id])
   activityType ActivityType
   currentName  String?
   previousName String?

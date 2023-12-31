@@ -1,4 +1,7 @@
 import { db } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs";
+import { User } from "@clerk/nextjs/server";
+import { ActivitySubType, ActivityType } from "@prisma/client";
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -65,6 +68,28 @@ async function PUT(request: NextRequest, { params: { columnId } }: Params) {
     },
     data: {
       name,
+    },
+  });
+
+  // Add activity to the column.
+
+  const user = (await currentUser()) as User;
+
+  const activity = await db.activity.create({
+    data: {
+      userId: user.id,
+      createdAt: new Date(),
+      subType: ActivitySubType.COLUMN,
+    },
+  });
+
+  await db.columnActivity.create({
+    data: {
+      activityId: activity.id,
+      columnId,
+      activityType: ActivityType.UPDATE,
+      previousName: existingColumn.name,
+      currentName: name,
     },
   });
 

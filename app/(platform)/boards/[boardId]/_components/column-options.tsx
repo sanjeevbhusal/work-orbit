@@ -27,6 +27,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { EditColumn } from "./edit-column";
 import { Column } from "@prisma/client";
+import { ColumnActivityModal } from "./column-activity-modal";
 
 interface ColumnOptionsProps {
   column: Column;
@@ -38,6 +39,7 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
     useState(false);
   const [isDeletingColumn, setIsDeletingColumn] = useState(false);
   const [isEditingColumn, setIsEditingColumn] = useState(false);
+  const [showActivityModal, setShowActivityModal] = useState(false);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -68,6 +70,12 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
         <DropdownMenuContent className="w-64">
           <DropdownMenuLabel className="text-center">Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => setShowActivityModal(true)}
+          >
+            View Activity
+          </DropdownMenuItem>
 
           <DropdownMenuItem
             className="cursor-pointer"
@@ -75,6 +83,7 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
           >
             Edit Column
           </DropdownMenuItem>
+
           <DropdownMenuItem className="cursor-pointer" onClick={onCardAdd}>
             Add Card
           </DropdownMenuItem>
@@ -114,6 +123,11 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
         column={column}
         open={isEditingColumn}
         setOpen={(open) => setIsEditingColumn(open)}
+      />
+      <ColumnActivityModal
+        open={showActivityModal}
+        onOpenChange={(open) => setShowActivityModal(open)}
+        column={column}
       />
     </div>
   );
