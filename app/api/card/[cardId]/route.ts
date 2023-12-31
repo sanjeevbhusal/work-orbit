@@ -1,4 +1,7 @@
 import { db } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs";
+import { User } from "@clerk/nextjs/server";
+import { ActivitySubType, ActivityType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -26,6 +29,27 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
     );
   }
 
+  const existingCard = await db.card.findFirst({
+    where: {
+      id: cardId,
+    },
+  });
+
+  if (!existingCard) {
+    return NextResponse.json(
+      {
+        error: "Card not found",
+      },
+      {
+        status: 404,
+      }
+    );
+  }
+
+  if (existingCard.columnId === parsedPayload.data.columnId) {
+    return NextResponse.json({ ok: true });
+  }
+
   const { columnId, index } = parsedPayload.data;
 
   await db.card.update({
@@ -35,6 +59,28 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
     data: {
       columnId,
       index,
+    },
+  });
+
+  // Did this card moved into another column.
+  // Current column id with the new one.
+  const user = (await currentUser()) as User;
+
+  const activity = await db.activity.create({
+    data: {
+      userId: user.id,
+      createdAt: new Date(),
+      subType: ActivitySubType.CARD,
+    },
+  });
+
+  await db.cardActivity.create({
+    data: {
+      activityId: activity.id,
+      activityType: ActivityType.MOVE,
+      previousColumnId: existingCard.columnId,
+      currentColumnId: columnId,
+      cardId: existingCard.id,
     },
   });
 

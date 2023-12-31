@@ -1,4 +1,4 @@
-import { PageTitle } from "@/components/pae-title";
+import { SectionTitle } from "@/components/section-title";
 import { PageSubheading } from "@/components/page-subheading";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -47,7 +47,7 @@ function DeleteBoard({ board }: DeleteBoardProps) {
   }
   return (
     <div className="mt-8">
-      <PageTitle>Delete Board</PageTitle>
+      <SectionTitle>Delete Board</SectionTitle>
       <PageSubheading className="mt-2">
         This action cannot be undone. This will delete the board, all its column
         and all the cards inside the column

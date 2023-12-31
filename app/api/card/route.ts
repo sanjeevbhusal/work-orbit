@@ -1,4 +1,7 @@
 import { db } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs";
+import { User } from "@clerk/nextjs/server";
+import { ActivitySubType, ActivityType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -53,11 +56,30 @@ async function POST(request: NextRequest) {
 
   const { name } = validatedPayload.data;
 
-  await db.card.create({
+  const card = await db.card.create({
     data: {
       name,
       columnId,
       index: existingColumn.cards.length + 1,
+    },
+  });
+
+  // add a activity for this card.
+
+  const user = (await currentUser()) as User;
+  const activity = await db.activity.create({
+    data: {
+      userId: user.id,
+      createdAt: new Date(),
+      subType: ActivitySubType.CARD,
+    },
+  });
+  await db.cardActivity.create({
+    data: {
+      activityId: activity.id,
+      cardId: card.id,
+      activityType: ActivityType.MOVE,
+      currentColumnId: columnId,
     },
   });
 

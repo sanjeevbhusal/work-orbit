@@ -24,36 +24,26 @@ model Board {
 }
 
 model Column {
-  id             String           @id @default(uuid())
-  name           String
-  description    String?
-  Board          Board            @relation(references: [id], fields: [boardId], onDelete: Cascade)
-  boardId        String
-  cards          Card[]
-  ColumnActivity ColumnActivity[]
+  id                   String           @id @default(uuid())
+  name                 String
+  description          String?
+  Board                Board            @relation(references: [id], fields: [boardId], onDelete: Cascade)
+  boardId              String
+  cards                Card[]
+  ColumnActivity       ColumnActivity[]
+  currentCardActivity  CardActivity[]   @relation("currentColumn")
+  previousCardActivity CardActivity[]   @relation("previousColumn")
 }
 
 model Card {
-  id       String @id @default(uuid())
-  name     String
-  Column   Column @relation(references: [id], fields: [columnId], onDelete: Cascade)
-  columnId String
-  index    Int
+  id           String         @id @default(uuid())
+  name         String
+  Column       Column         @relation(references: [id], fields: [columnId], onDelete: Cascade)
+  columnId     String
+  index        Int
+  CardActivity CardActivity[]
+  comments     Comment[]
 }
-
-// A Activity represents some action that has taken place on a board, card, or column.
-// For example, when a card is moved from one column to another, a new Activity is created.
-// This allows us to keep track of what has happened on a board and when.
-// We should track the user that performs the activity.
-// We should track the time the activity was performed.
-// When a card is moved from one column to another, we should track the column it was moved from and the column it was moved to.
-// When a card is moved from one board to another, we should track the board it was moved from and the board it was moved to.
-
-// When a card is renamed, we should track the existing name and new name. 
-
-// The Type of the entity that the activity is associated with. (Board, Card, Column)
-// The type of the activity that was performed. (Create, Update, Delete, Move)
-// The parent of the entity that the activity is associated with. (Board, Card, Column)
 
 enum EntityType {
   BOARD
@@ -64,11 +54,13 @@ enum EntityType {
 enum ActivityType {
   CREATE
   UPDATE
+  MOVE
 }
 
 enum ActivitySubType {
   BOARD
   COLUMN
+  CARD
 }
 
 model Activity {
@@ -78,6 +70,7 @@ model Activity {
   BoardActivity  BoardActivity[]
   subType        ActivitySubType
   ColumnActivity ColumnActivity[]
+  CardActivity   CardActivity[]
 }
 
 model BoardActivity {
@@ -100,4 +93,26 @@ model ColumnActivity {
   activityType ActivityType
   currentName  String?
   previousName String?
+}
+
+model CardActivity {
+  id               String       @id @default(uuid())
+  Activity         Activity     @relation(fields: [activityId], references: [id])
+  activityId       String
+  cardId           String
+  card             Card         @relation(fields: [cardId], references: [id])
+  activityType     ActivityType
+  previousColumnId String?
+  currentColumnId  String
+  previousColumn   Column?      @relation("previousColumn", fields: [previousColumnId], references: [id])
+  currentColumn    Column       @relation("currentColumn", fields: [currentColumnId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  text      String
+  createdAt DateTime @default(now())
+  userId    String
+  cardId    String
+  Card      Card     @relation(fields: [cardId], references: [id])
 }
