@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 
 import { Loader2 } from "lucide-react";
 import { Column } from "@prisma/client";
+import { Textarea } from "@/components/ui/textarea";
 
 interface EditCardProps {
   column: Column;
@@ -39,18 +40,24 @@ const formSchema = z.object({
     .string()
     .min(1, "Column Name cannot be empty")
     .max(50, "Column Name cannot be more than 50 characters"),
+  description: z
+    .string()
+    .max(5000, "Column Name cannot be more than 5000 characters")
+    .optional(),
 });
 
 function EditColumn({ column, open, setOpen }: EditCardProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: column.name,
+      description: column.description || undefined,
     },
   });
 
   useEffect(() => {
     form.setValue("name", column.name);
+    form.setValue("description", column.description || undefined);
   }, [form, column]);
 
   const { toast } = useToast();
@@ -66,9 +73,10 @@ function EditColumn({ column, open, setOpen }: EditCardProps) {
         description: "Something went wrong while editing the column",
         variant: "destructive",
       });
-    } finally {
       form.reset();
-      setOpen(false);
+    } finally {
+      // form.reset();
+      // setOpen(false);
     }
   }
 
@@ -81,14 +89,15 @@ function EditColumn({ column, open, setOpen }: EditCardProps) {
         setOpen(open);
       }}
     >
-      <SheetContent>
+      <SheetContent className="w-[600px] sm:max-w-none">
         <SheetHeader>
-          <SheetTitle>{column.name}</SheetTitle>
-          <SheetDescription></SheetDescription>
+          <SheetTitle className="text-base">
+            Edit Column {column.name}
+          </SheetTitle>
         </SheetHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6">
             <FormItem>
               <FormField
                 name="name"
@@ -98,6 +107,26 @@ function EditColumn({ column, open, setOpen }: EditCardProps) {
                     <FormLabel>Column Name</FormLabel>
                     <FormControl>
                       <Input {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormMessage />
+            </FormItem>
+            <FormItem className="mt-4">
+              <FormField
+                name="description"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Column Description</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        {...field}
+                        placeholder="This Column holds all the cards that should be worked upon in this week."
+                      />
                     </FormControl>
 
                     <FormMessage />

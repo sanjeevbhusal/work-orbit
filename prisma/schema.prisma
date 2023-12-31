@@ -26,6 +26,7 @@ model Board {
 model Column {
   id             String           @id @default(uuid())
   name           String
+  description    String?
   Board          Board            @relation(references: [id], fields: [boardId], onDelete: Cascade)
   boardId        String
   cards          Card[]

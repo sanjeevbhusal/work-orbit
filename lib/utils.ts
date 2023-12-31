@@ -16,6 +16,7 @@ function getBoardColumns(board: BoardWithColumnAndCards) {
   return board.columns.map((column) => ({
     id: column.id,
     name: column.name,
+    description: column.description,
   }));
 }
 function getBoardCards(board: BoardWithColumnAndCards) {

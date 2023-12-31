@@ -30,6 +30,10 @@ const editColumnFormSchema = z.object({
     .string()
     .min(1, "Column Name cannot be empty")
     .max(50, "Column Name cannot be more than 50 characters"),
+  description: z
+    .string()
+    .max(5000, "Column Name cannot be more than 5000 characters")
+    .optional(),
 });
 
 async function PUT(request: NextRequest, { params: { columnId } }: Params) {
@@ -44,8 +48,6 @@ async function PUT(request: NextRequest, { params: { columnId } }: Params) {
       }
     );
   }
-
-  const { name } = parsedPayload.data;
 
   const existingColumn = await db.column.findUnique({
     where: {
@@ -62,16 +64,19 @@ async function PUT(request: NextRequest, { params: { columnId } }: Params) {
     );
   }
 
+  const { name, description } = parsedPayload.data;
+
   await db.column.update({
     where: {
       id: columnId,
     },
     data: {
       name,
+      description,
     },
   });
 
-  // Add activity to the column.
+  //TODO: Add activity to the column.
 
   const user = (await currentUser()) as User;
 
