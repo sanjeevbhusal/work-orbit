@@ -23,6 +23,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { PageHeading } from "@/components/page-heading";
 import { PageSubheading } from "@/components/page-subheading";
+import { DeleteBoard } from "./delete-board";
 
 const formSchema = z.object({
   name: z
@@ -98,6 +99,7 @@ function Settings({ board }: SettingsPageProps) {
       }
     }
   }
+
   return (
     <div className="py-4 px-8">
       <PageHeading>Settings</PageHeading>
@@ -148,6 +150,7 @@ function Settings({ board }: SettingsPageProps) {
           </Button>
         </form>
       </Form>
+      <DeleteBoard board={board} />
     </div>
   );
 }

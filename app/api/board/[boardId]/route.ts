@@ -115,3 +115,36 @@ export async function PUT(
 
   return NextResponse.json({ ok: true });
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params: { boardId } }: Params
+) {
+  // Verify board exists.
+  const board = await db.board.findFirst({
+    where: {
+      id: boardId,
+    },
+  });
+
+  if (!board) {
+    return NextResponse.json(
+      {
+        error: "Board not found",
+      },
+      {
+        status: 404,
+      }
+    );
+  }
+
+  await db.board.delete({
+    where: {
+      id: boardId,
+    },
+  });
+
+  //TODO: Delete all the activities related to the board, column and cards.
+
+  return NextResponse.json({ ok: true });
+}
