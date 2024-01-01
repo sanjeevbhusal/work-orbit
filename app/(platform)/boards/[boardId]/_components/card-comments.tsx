@@ -7,7 +7,13 @@ import { z } from 'zod';
 import { SectionTitle } from '@/components/section-title';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/components/ui/use-toast';
@@ -71,7 +77,10 @@ function CardComments({ card }: CardInformationProps) {
       <SectionTitle>Comments</SectionTitle>
       <Separator className="my-4" />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit((values) => mutate(values))} className="space-y-6 mt-6">
+        <form
+          onSubmit={form.handleSubmit((values) => mutate(values))}
+          className="space-y-6 mt-6"
+        >
           <FormItem>
             <FormField
               name="text"
@@ -100,11 +109,18 @@ function CardComments({ card }: CardInformationProps) {
         {isFetching ? (
           <Loader2 className="animate-spin mx-auto" />
         ) : error ? (
-          <p className="text-neutral-500">Oops!! Something went wrong while fetching comments.</p>
+          <p className="text-neutral-500">
+            Oops!! Something went wrong while fetching comments.
+          </p>
+        ) : comments?.length === 0 ? (
+          <p className="text-neutral-500">No comments yet.</p>
         ) : (
           <div className="flex flex-col gap-4">
             {comments?.map((comment) => (
-              <div key={comment.id} className="flex flex-col gap-4 py-2 px-4 border rounded-lg ">
+              <div
+                key={comment.id}
+                className="flex flex-col gap-4 py-2 px-4 border rounded-lg "
+              >
                 <div className="flex gap-4 items-center">
                   <Avatar>
                     <AvatarImage src="https://github.com/shadcn.png" />
@@ -112,7 +128,9 @@ function CardComments({ card }: CardInformationProps) {
                   </Avatar>
 
                   <p className="font-semibold text-sm">Sanjeev Bhusal</p>
-                  <p className="text-xs text-neutral-500">{dayjs(comment.createdAt).format('DD MMMM, YYYY')}</p>
+                  <p className="text-xs text-neutral-500">
+                    {dayjs(comment.createdAt).format('DD MMMM, YYYY')}
+                  </p>
                 </div>
                 <p className="text-sm">{comment.text}</p>
               </div>
