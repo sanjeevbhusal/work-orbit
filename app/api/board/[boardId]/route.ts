@@ -39,7 +39,6 @@ export async function PUT(
   }
 
   // Verify board exists.
-
   const board = await db.board.findFirst({
     where: {
       id: boardId,
@@ -60,25 +59,27 @@ export async function PUT(
   const { name, description } = parsedPayload.data;
   const { orgId } = auth();
 
-  if (name !== board.name) {
-    // Verify the new updated name doesnot colide with any other existing board within the same organization.
-    const existingBoardWithSameName = await db.board.findFirst({
-      where: {
-        name,
-        organizationId: orgId as string,
-      },
-    });
+  if (name === board.name && description === board.description) {
+    return NextResponse.json({ ok: true });
+  }
 
-    if (existingBoardWithSameName) {
-      return NextResponse.json(
-        {
-          error: "Board with this name already exists",
-        },
-        {
-          status: 409,
-        }
-      );
-    }
+  // Verify the new updated name doesnot colide with any other existing board within the same organization.
+  const existingBoardWithSameName = await db.board.findFirst({
+    where: {
+      name,
+      organizationId: orgId as string,
+    },
+  });
+
+  if (existingBoardWithSameName) {
+    return NextResponse.json(
+      {
+        error: "Board with this name already exists",
+      },
+      {
+        status: 409,
+      }
+    );
   }
 
   await db.board.update({
@@ -92,7 +93,6 @@ export async function PUT(
   });
 
   // Add activity to the board.
-
   const user = (await currentUser()) as User;
 
   const activity = await db.activity.create({
