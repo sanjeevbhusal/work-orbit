@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs";
+import { db } from '@/lib/db';
+import { currentUser } from '@clerk/nextjs';
 
 async function getWorkspaces() {
   const user = await currentUser();

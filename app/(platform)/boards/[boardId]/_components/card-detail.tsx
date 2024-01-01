@@ -1,8 +1,9 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { CardInformation } from "./card-information";
-import { CardHistory } from "./card-history";
-import { CardComments } from "./card-comments";
-import { Card } from "@prisma/client";
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Card } from '@prisma/client';
+
+import { CardComments } from './card-comments';
+import { CardHistory } from './card-history';
+import { CardInformation } from './card-information';
 
 interface CardDetailsProps {
   card: Card;

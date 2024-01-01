@@ -1,15 +1,17 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import localFont from "next/font/local";
-import { BoardWithColumnAndCards } from "./types";
-import { Card } from "@prisma/client";
+import localFont from 'next/font/local';
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+import { Card } from '@prisma/client';
+
+import { BoardWithColumnAndCards } from './types';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 const headingFont = localFont({
-  src: "../public/font.woff2",
+  src: '../public/font.woff2',
 });
 
 function getBoardColumns(board: BoardWithColumnAndCards) {
@@ -29,4 +31,4 @@ function getBoardCards(board: BoardWithColumnAndCards) {
   return cards;
 }
 
-export { cn, headingFont, getBoardColumns, getBoardCards };
+export { cn, getBoardCards,getBoardColumns, headingFont };

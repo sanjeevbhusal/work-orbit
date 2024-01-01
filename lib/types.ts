@@ -1,4 +1,4 @@
-import { Board, Column, Card } from "@prisma/client";
+import { Board, Card,Column } from '@prisma/client';
 
 type BoardWithColumnAndCards = Board & {
   columns: (Column & { cards: Card[] })[];
@@ -12,4 +12,4 @@ type BoardImage = {
   large: string;
 };
 
-export type { BoardWithColumnAndCards, BoardImage, ColumnWithCards };
+export type { BoardImage, BoardWithColumnAndCards, ColumnWithCards };

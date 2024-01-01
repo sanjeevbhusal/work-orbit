@@ -1,9 +1,10 @@
-import { getBoard } from "@/actions/getBoard";
+import Image from 'next/image';
 
-import Image from "next/image";
-import { Board } from "./_components/Board";
-import { BoardWithColumnAndCards } from "@/lib/types";
-import { PageHeading } from "@/components/page-heading";
+import { getBoard } from '@/actions/getBoard';
+import { PageHeading } from '@/components/page-heading';
+import { BoardWithColumnAndCards } from '@/lib/types';
+
+import { Board } from './_components/Board';
 
 interface Props {
   params: {
@@ -20,12 +21,7 @@ export default async function Page({ params: { boardId } }: Props) {
         <PageHeading>{board.name}</PageHeading>
       </div>
 
-      <Image
-        src={board.largeImageUrl}
-        alt="nature image"
-        fill
-        className="z-[-1]"
-      />
+      <Image src={board.largeImageUrl} alt="nature image" fill className="z-[-1]" />
       <Board board={board} />
     </div>
   );

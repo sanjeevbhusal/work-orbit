@@ -1,19 +1,17 @@
-import { db } from "@/lib/db";
-import { auth, currentUser } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/server";
-import { ActivitySubType, ActivityType } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+import { db } from '@/lib/db';
+import { auth, currentUser } from '@clerk/nextjs';
+import { User } from '@clerk/nextjs/server';
+import { ActivitySubType, ActivityType } from '@prisma/client';
 
 const updateBoardFormSchema = z.object({
   name: z
     .string()
-    .min(2, "Workspace Name must be atleast 2 characters")
-    .max(50, "Workspace Name cannot be more than 25 characters"),
-  description: z
-    .string()
-    .max(5000, "Description cannot be more than 5000 characters")
-    .optional(),
+    .min(2, 'Workspace Name must be atleast 2 characters')
+    .max(50, 'Workspace Name cannot be more than 25 characters'),
+  description: z.string().max(5000, 'Description cannot be more than 5000 characters').optional(),
 });
 
 interface Params {
@@ -22,10 +20,7 @@ interface Params {
   };
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params: { boardId } }: Params
-) {
+export async function PUT(request: NextRequest, { params: { boardId } }: Params) {
   const payload = await request.json();
   const parsedPayload = updateBoardFormSchema.safeParse(payload);
 
@@ -34,7 +29,7 @@ export async function PUT(
       { error: parsedPayload.error.message },
       {
         status: 400,
-      }
+      },
     );
   }
 
@@ -48,11 +43,11 @@ export async function PUT(
   if (!board) {
     return NextResponse.json(
       {
-        error: "Board not found",
+        error: 'Board not found',
       },
       {
         status: 404,
-      }
+      },
     );
   }
 
@@ -74,11 +69,11 @@ export async function PUT(
   if (existingBoardWithSameName) {
     return NextResponse.json(
       {
-        error: "Board with this name already exists",
+        error: 'Board with this name already exists',
       },
       {
         status: 409,
-      }
+      },
     );
   }
 
@@ -116,10 +111,7 @@ export async function PUT(
   return NextResponse.json({ ok: true });
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params: { boardId } }: Params
-) {
+export async function DELETE(request: NextRequest, { params: { boardId } }: Params) {
   // Verify board exists.
   const board = await db.board.findFirst({
     where: {
@@ -130,11 +122,11 @@ export async function DELETE(
   if (!board) {
     return NextResponse.json(
       {
-        error: "Board not found",
+        error: 'Board not found',
       },
       {
         status: 404,
-      }
+      },
     );
   }
 

@@ -1,15 +1,10 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useState } from "react";
-import { BsThreeDots } from "react-icons/bs";
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+import { BsThreeDots } from 'react-icons/bs';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,14 +15,21 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import { EditColumn } from "./edit-column";
-import { Column } from "@prisma/client";
-import { ColumnActivityModal } from "./column-activity-modal";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useToast } from '@/components/ui/use-toast';
+import { Column } from '@prisma/client';
+
+import { ColumnActivityModal } from './column-activity-modal';
+import { EditColumn } from './edit-column';
 
 interface ColumnOptionsProps {
   column: Column;
@@ -35,8 +37,7 @@ interface ColumnOptionsProps {
 }
 
 function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
-  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
-    useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const [isDeletingColumn, setIsDeletingColumn] = useState(false);
   const [isEditingColumn, setIsEditingColumn] = useState(false);
   const [showActivityModal, setShowActivityModal] = useState(false);
@@ -51,8 +52,8 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while deleting the column",
-        variant: "destructive",
+        description: 'Something went wrong while deleting the column',
+        variant: 'destructive',
       });
     } finally {
       setShowDeleteConfirmationModal(false);
@@ -63,24 +64,18 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant={"ghost"}>
+          <Button variant={'ghost'}>
             <BsThreeDots size={20} />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64">
           <DropdownMenuLabel className="text-center">Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => setShowActivityModal(true)}
-          >
+          <DropdownMenuItem className="cursor-pointer" onClick={() => setShowActivityModal(true)}>
             View Activity
           </DropdownMenuItem>
 
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => setIsEditingColumn(true)}
-          >
+          <DropdownMenuItem className="cursor-pointer" onClick={() => setIsEditingColumn(true)}>
             Edit Column
           </DropdownMenuItem>
 
@@ -95,35 +90,23 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AlertDialog
-        open={showDeleteConfirmationModal}
-        onOpenChange={(open) => setShowDeleteConfirmationModal(open)}
-      >
+      <AlertDialog open={showDeleteConfirmationModal} onOpenChange={(open) => setShowDeleteConfirmationModal(open)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              Deleting the column will also delete all the cards inside it. This
-              action cannot be reversed.
+              Deleting the column will also delete all the cards inside it. This action cannot be reversed.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={deleteColumn}>
-              {isDeletingColumn ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                "Continue"
-              )}
+              {isDeletingColumn ? <Loader2 className="animate-spin" /> : 'Continue'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <EditColumn
-        column={column}
-        open={isEditingColumn}
-        setOpen={(open) => setIsEditingColumn(open)}
-      />
+      <EditColumn column={column} open={isEditingColumn} setOpen={(open) => setIsEditingColumn(open)} />
       <ColumnActivityModal
         open={showActivityModal}
         onOpenChange={(open) => setShowActivityModal(open)}

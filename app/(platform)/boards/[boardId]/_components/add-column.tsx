@@ -1,29 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import axios from "axios";
-import { useState } from "react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import { Board } from "@prisma/client";
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Board } from '@prisma/client';
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Column Name cannot be empty")
-    .max(50, "Column Name cannot be more than 30 characters"),
+  name: z.string().min(1, 'Column Name cannot be empty').max(50, 'Column Name cannot be more than 30 characters'),
 });
 
 interface AddColumnProps {
@@ -36,7 +26,7 @@ function AddColumn({ board }: AddColumnProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: '',
     },
   });
 
@@ -50,8 +40,8 @@ function AddColumn({ board }: AddColumnProps) {
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while creating the column",
-        variant: "destructive",
+        description: 'Something went wrong while creating the column',
+        variant: 'destructive',
       });
     } finally {
       form.reset();
@@ -71,11 +61,7 @@ function AddColumn({ board }: AddColumnProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Enter the name for this Column"
-                        className="w-72"
-                      />
+                      <Input {...field} placeholder="Enter the name for this Column" className="w-72" />
                     </FormControl>
 
                     <FormMessage />
@@ -83,18 +69,12 @@ function AddColumn({ board }: AddColumnProps) {
                 )}
               />
               <div className="flex items-center justify-end">
-                <Button
-                  variant={"primary"}
-                  className="w-fit mt-2"
-                  type="submit"
-                >
-                  {form.formState.isSubmitting && (
-                    <Loader2 className="animate-spin mr-2" />
-                  )}
+                <Button variant={'primary'} className="w-fit mt-2" type="submit">
+                  {form.formState.isSubmitting && <Loader2 className="animate-spin mr-2" />}
                   Add Column
                 </Button>
                 <Button
-                  variant={"destructive"}
+                  variant={'destructive'}
                   className="w-fit mt-2 ml-2"
                   onClick={() => setShowAddColumnInput(false)}
                   type="button"
@@ -108,7 +88,7 @@ function AddColumn({ board }: AddColumnProps) {
         </div>
       ) : (
         <Button
-          size={"sm"}
+          size={'sm'}
           variant="outline"
           className="hidden lg:block bg-slate-100"
           onClick={() => setShowAddColumnInput(true)}

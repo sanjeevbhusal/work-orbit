@@ -1,16 +1,17 @@
-import { db } from "@/lib/db";
-import { auth, currentUser } from "@clerk/nextjs";
-import { Clerk, User } from "@clerk/nextjs/server";
-import { ActivitySubType, ActivityType } from "@prisma/client";
-import axios from "axios";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { NextRequest, NextResponse } from 'next/server';
+import axios from 'axios';
+import { z } from 'zod';
+
+import { db } from '@/lib/db';
+import { auth, currentUser } from '@clerk/nextjs';
+import { Clerk, User } from '@clerk/nextjs/server';
+import { ActivitySubType, ActivityType } from '@prisma/client';
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(2, "Workspace Name must be atleast 2 characters")
-    .max(50, "Workspace Name cannot be more than 25 characters"),
+    .min(2, 'Workspace Name must be atleast 2 characters')
+    .max(50, 'Workspace Name cannot be more than 25 characters'),
   smallImageUrl: z.string(),
   largeImageUrl: z.string(),
 });
@@ -24,7 +25,7 @@ async function POST(request: NextRequest) {
       { error: parsedPayload.error.message },
       {
         status: 400,
-      }
+      },
     );
   }
 
@@ -41,10 +42,10 @@ async function POST(request: NextRequest) {
 
   if (existingBoard) {
     return NextResponse.json(
-      { error: "Board with this name already exists" },
+      { error: 'Board with this name already exists' },
       {
         status: 409,
-      }
+      },
     );
   }
 

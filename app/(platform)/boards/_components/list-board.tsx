@@ -1,6 +1,7 @@
-import { Board } from "@prisma/client";
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { Board } from '@prisma/client';
 
 interface ListBoardProps {
   boards: Board[];
@@ -8,9 +9,7 @@ interface ListBoardProps {
 
 function ListBoard({ boards }: ListBoardProps) {
   return boards.length === 0 ? (
-    <p className="mt-2 text-sm">
-      You donot have any boards yet. Please create a new board
-    </p>
+    <p className="mt-2 text-sm">You donot have any boards yet. Please create a new board</p>
   ) : (
     <div className="flex gap-8 flex-wrap">
       {boards.map((board) => (
@@ -21,12 +20,7 @@ function ListBoard({ boards }: ListBoardProps) {
         >
           <p className="absolute z-40 text-white">{board.name}</p>
 
-          <Image
-            src={board.smallImageUrl}
-            alt="nature picture"
-            fill
-            className="rounded-lg"
-          />
+          <Image src={board.smallImageUrl} alt="nature picture" fill className="rounded-lg" />
         </Link>
       ))}
     </div>

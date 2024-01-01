@@ -1,15 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { ActivitySubType, ActivityType, Column } from "@prisma/client";
-import axios from "axios";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import dayjs from 'dayjs';
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ActivitySubType, ActivityType, Column } from '@prisma/client';
 
 interface ColumnActivityModalProps {
   open: boolean;
@@ -33,11 +28,7 @@ type Activity = {
   previousName: string | null;
 };
 
-function ColumnActivityModal({
-  open,
-  onOpenChange,
-  column,
-}: ColumnActivityModalProps) {
+function ColumnActivityModal({ open, onOpenChange, column }: ColumnActivityModalProps) {
   const [activities, setActivities] = useState<Activity[]>([]);
   useEffect(() => {
     async function fetchColumnActivity() {
@@ -58,8 +49,7 @@ function ColumnActivityModal({
     if (message.activityType === ActivityType.UPDATE) {
       return (
         <p>
-          renamed this column from{" "}
-          <span className="font-semibold">{message.previousName}</span> to{" "}
+          renamed this column from <span className="font-semibold">{message.previousName}</span> to{' '}
           <span className="font-semibold">{message.currentName}</span>
         </p>
       );
@@ -70,16 +60,11 @@ function ColumnActivityModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[32rem] w-fit max-w-none">
         <DialogHeader>
-          <DialogTitle className="font-semibold text-base">
-            Activity for Column {column.name}{" "}
-          </DialogTitle>
+          <DialogTitle className="font-semibold text-base">Activity for Column {column.name} </DialogTitle>
         </DialogHeader>
         <div className="mt-2 flex flex-col gap-4">
           {activities.map((activity) => (
-            <div
-              key={activity.id}
-              className="py-2 px-4 border rounded-lg bg-slate-200 flex gap-4 items-center"
-            >
+            <div key={activity.id} className="py-2 px-4 border rounded-lg bg-slate-200 flex gap-4 items-center">
               <div>
                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
@@ -91,7 +76,7 @@ function ColumnActivityModal({
                   <span className="font-semibold">Sanjeev Bhusal</span>
                   <div className="ml-1">{getMessage(activity)}</div>
                 </div>
-                <p className="text-xs">{dayjs().format("DD MMM, YYYY")}</p>
+                <p className="text-xs">{dayjs().format('DD MMM, YYYY')}</p>
               </div>
             </div>
           ))}

@@ -1,30 +1,20 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import axios from "axios";
-import { useState } from "react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { BsPlusLg } from 'react-icons/bs';
+import * as z from 'zod';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import { BsPlusLg } from "react-icons/bs";
-import { Column } from "@prisma/client";
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Column } from '@prisma/client';
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Card Name cannot be empty")
-    .max(50, "Card Name cannot be more than 50 characters"),
+  name: z.string().min(1, 'Card Name cannot be empty').max(50, 'Card Name cannot be more than 50 characters'),
 });
 
 interface AddColumnProps {
@@ -37,7 +27,7 @@ function AddCard({ column }: AddColumnProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: '',
     },
   });
 
@@ -51,8 +41,8 @@ function AddCard({ column }: AddColumnProps) {
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while creating the card",
-        variant: "destructive",
+        description: 'Something went wrong while creating the card',
+        variant: 'destructive',
       });
     } finally {
       form.reset();
@@ -72,10 +62,7 @@ function AddCard({ column }: AddColumnProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Enter the title for this card"
-                      />
+                      <Input {...field} placeholder="Enter the title for this card" />
                     </FormControl>
 
                     <FormMessage />
@@ -83,14 +70,12 @@ function AddCard({ column }: AddColumnProps) {
                 )}
               />
               <div className="ml-auto w-fit flex justify-between gap-2 mt-2">
-                <Button variant={"primary"} onClick={() => {}}>
-                  {form.formState.isSubmitting && (
-                    <Loader2 className="animate-spin mr-2" />
-                  )}
+                <Button variant={'primary'} onClick={() => {}}>
+                  {form.formState.isSubmitting && <Loader2 className="animate-spin mr-2" />}
                   Add Card
                 </Button>
                 <Button
-                  variant={"destructive"}
+                  variant={'destructive'}
                   className="text-sm"
                   onClick={() => setShowAddCardInput(false)}
                   disabled={form.formState.isSubmitting}

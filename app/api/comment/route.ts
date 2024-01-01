@@ -1,8 +1,9 @@
-import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+import { db } from '@/lib/db';
+import { currentUser } from '@clerk/nextjs';
+import { User } from '@clerk/nextjs/server';
 
 const formSchema = z.object({
   text: z.string(),
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
       },
       {
         status: 400,
-      }
+      },
     );
   }
   const { text, cardId } = parsedPayload.data;
@@ -33,11 +34,11 @@ export async function POST(request: NextRequest) {
   if (!existingCard) {
     return NextResponse.json(
       {
-        error: "Card not found",
+        error: 'Card not found',
       },
       {
         status: 404,
-      }
+      },
     );
   }
 
@@ -57,15 +58,15 @@ export async function POST(request: NextRequest) {
 // localhost:3000/api/comment?cardId=dkflajksdlfjksaldfjklsdfjadslkf
 
 export async function GET(request: NextRequest) {
-  const cardId = request.nextUrl.searchParams.get("cardId");
+  const cardId = request.nextUrl.searchParams.get('cardId');
   if (!cardId) {
     return NextResponse.json(
       {
-        error: "Card Id not provided in searchParams",
+        error: 'Card Id not provided in searchParams',
       },
       {
         status: 400,
-      }
+      },
     );
   }
 
@@ -78,11 +79,11 @@ export async function GET(request: NextRequest) {
   if (!existingCard) {
     return NextResponse.json(
       {
-        error: "Card not found",
+        error: 'Card not found',
       },
       {
         status: 404,
-      }
+      },
     );
   }
 

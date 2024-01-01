@@ -1,3 +1,8 @@
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,23 +13,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
-import { Card } from "@prisma/client";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/components/ui/use-toast';
+import { Card } from '@prisma/client';
 
 interface DeleteCardProps {
   card: Card;
 }
 
 function DeleteCard({ card }: DeleteCardProps) {
-  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
-    useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { toast } = useToast();
@@ -37,8 +37,8 @@ function DeleteCard({ card }: DeleteCardProps) {
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while deleting the card",
-        variant: "destructive",
+        description: 'Something went wrong while deleting the card',
+        variant: 'destructive',
       });
     } finally {
       setIsDeleting(false);
@@ -49,18 +49,16 @@ function DeleteCard({ card }: DeleteCardProps) {
   return (
     <div className="mt-4">
       <Label>Delete this Card</Label>
-      <p className="text-xs mt-1">
-        Once you delete the card, you cannot recover it. Please be sure.{" "}
-      </p>
+      <p className="text-xs mt-1">Once you delete the card, you cannot recover it. Please be sure. </p>
       <AlertDialog
         open={showDeleteConfirmationModal}
         onOpenChange={(open) => {
-          console.log("change open", open);
+          console.log('change open', open);
           setShowDeleteConfirmationModal(open);
         }}
       >
         <AlertDialogTrigger asChild>
-          <Button variant="destructive" className="mt-2" size={"sm"}>
+          <Button variant="destructive" className="mt-2" size={'sm'}>
             Delete Card
           </Button>
         </AlertDialogTrigger>
@@ -68,8 +66,7 @@ function DeleteCard({ card }: DeleteCardProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete all the
-              information related to the card.
+              This action cannot be undone. This will permanently delete all the information related to the card.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { resetServerContext } from 'react-beautiful-dnd';
 
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { Column as BoardColumn } from "./Column";
-import { getBoardColumns, getBoardCards } from "@/lib/utils";
-import { resetServerContext } from "react-beautiful-dnd";
-import { AddColumn } from "./add-column";
-import { BoardWithColumnAndCards } from "@/lib/types";
+import { BoardWithColumnAndCards } from '@/lib/types';
+import { getBoardCards,getBoardColumns } from '@/lib/utils';
+
+import { AddColumn } from './add-column';
+import { Column as BoardColumn } from './Column';
 
 interface BoardProps {
   board: BoardWithColumnAndCards;
@@ -19,15 +20,7 @@ resetServerContext();
 function Board({ board }: BoardProps) {
   const router = useRouter();
 
-  async function updateCard({
-    id,
-    columnId,
-    index,
-  }: {
-    id: string;
-    columnId: string;
-    index: number;
-  }) {
+  async function updateCard({ id, columnId, index }: { id: string; columnId: string; index: number }) {
     try {
       axios.post(`/api/card/${id}`, { columnId, index });
       router.refresh();

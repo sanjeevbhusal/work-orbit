@@ -1,13 +1,14 @@
-import { db } from "@/lib/db";
-import { auth, currentUser } from "@clerk/nextjs";
-import { NextRequest, NextResponse } from "next/server";
-import * as z from "zod";
+import { NextRequest, NextResponse } from 'next/server';
+import * as z from 'zod';
+
+import { db } from '@/lib/db';
+import { auth, currentUser } from '@clerk/nextjs';
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(2, "Workspace Name must be atleast 2 characters")
-    .max(50, "Workspace Name cannot be more than 25 characters"),
+    .min(2, 'Workspace Name must be atleast 2 characters')
+    .max(50, 'Workspace Name cannot be more than 25 characters'),
 });
 
 async function POST(request: NextRequest) {
@@ -19,7 +20,7 @@ async function POST(request: NextRequest) {
       { error: parsedPayload.error.message },
       {
         status: 400,
-      }
+      },
     );
   }
 
@@ -39,7 +40,7 @@ async function POST(request: NextRequest) {
     },
     {
       status: 201,
-    }
+    },
   );
 }
 

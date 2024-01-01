@@ -1,6 +1,7 @@
-import { getBoard } from "@/actions/getBoard";
-import { Settings } from "./_components/settings";
-import { BoardWithColumnAndCards } from "@/lib/types";
+import { getBoard } from '@/actions/getBoard';
+import { BoardWithColumnAndCards } from '@/lib/types';
+
+import { Settings } from './_components/settings';
 
 interface SettingsPageProps {
   params: {
@@ -8,9 +9,7 @@ interface SettingsPageProps {
   };
 }
 
-export default async function SettingsPage({
-  params: { boardId },
-}: SettingsPageProps) {
+export default async function SettingsPage({ params: { boardId } }: SettingsPageProps) {
   const board = (await getBoard(boardId)) as BoardWithColumnAndCards;
   return <Settings board={board} />;
 }

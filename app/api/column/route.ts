@@ -1,26 +1,24 @@
-import { db } from "@/lib/db";
-import { User } from "@clerk/backend";
-import { currentUser } from "@clerk/nextjs";
-import { ActivitySubType, ActivityType } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+import { db } from '@/lib/db';
+import { User } from '@clerk/backend';
+import { currentUser } from '@clerk/nextjs';
+import { ActivitySubType, ActivityType } from '@prisma/client';
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Column Name cannot be empty")
-    .max(50, "Column Name cannot be more than 30 characters"),
+  name: z.string().min(1, 'Column Name cannot be empty').max(50, 'Column Name cannot be more than 30 characters'),
 });
 
 async function POST(request: NextRequest) {
-  const boardId = request.nextUrl.searchParams.get("boardId");
+  const boardId = request.nextUrl.searchParams.get('boardId');
 
   if (!boardId) {
     return NextResponse.json(
       {
-        error: "Board ID is required",
+        error: 'Board ID is required',
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -33,9 +31,9 @@ async function POST(request: NextRequest) {
   if (!existingBoard) {
     return NextResponse.json(
       {
-        error: "Board does not exist",
+        error: 'Board does not exist',
       },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -47,7 +45,7 @@ async function POST(request: NextRequest) {
       {
         error: validatedPayload.error,
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 

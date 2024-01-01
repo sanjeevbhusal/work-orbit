@@ -1,12 +1,10 @@
-import { SectionTitle } from "@/components/section-title";
-import { PageSubheading } from "@/components/page-subheading";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { Board } from "@prisma/client";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+
+import { PageSubheading } from '@/components/page-subheading';
+import { SectionTitle } from '@/components/section-title';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +15,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/components/ui/use-toast';
+import { Board } from '@prisma/client';
 
 interface DeleteBoardProps {
   board: Board;
@@ -34,11 +35,11 @@ function DeleteBoard({ board }: DeleteBoardProps) {
     setIsBoardDeleting(true);
     try {
       await axios.delete(`/api/board/${board.id}`);
-      router.push("/boards");
+      router.push('/boards');
     } catch (error) {
       toast({
-        description: "Something went wrong while deleting the board",
-        variant: "destructive",
+        description: 'Something went wrong while deleting the board',
+        variant: 'destructive',
       });
     } finally {
       setIsBoardDeleting(false);
@@ -49,13 +50,9 @@ function DeleteBoard({ board }: DeleteBoardProps) {
     <div className="mt-8">
       <SectionTitle>Delete Board</SectionTitle>
       <PageSubheading className="mt-2">
-        This action cannot be undone. This will delete the board, all its column
-        and all the cards inside the column
+        This action cannot be undone. This will delete the board, all its column and all the cards inside the column
       </PageSubheading>
-      <AlertDialog
-        open={openDialog}
-        onOpenChange={(open) => setOpenDialog(open)}
-      >
+      <AlertDialog open={openDialog} onOpenChange={(open) => setOpenDialog(open)}>
         <AlertDialogTrigger asChild>
           <Button variant="destructive" size="sm" className="mt-4">
             Delete Board
@@ -65,14 +62,12 @@ function DeleteBoard({ board }: DeleteBoardProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will delete the board, all its
-              column and all the cards inside the column
+              This action cannot be undone. This will delete the board, all its column and all the cards inside the
+              column
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isBoardDeleting}>
-              Cancel
-            </AlertDialogCancel>
+            <AlertDialogCancel disabled={isBoardDeleting}>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={(e) => {
                 deleteBoard();

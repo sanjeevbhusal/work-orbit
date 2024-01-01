@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from '@/lib/db';
 
 async function getBoardActivity(boardId: string) {
   return db.boardActivity.findMany({

@@ -1,32 +1,18 @@
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
-import axios from "axios";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-
-import { Loader2 } from "lucide-react";
-import { Column } from "@prisma/client";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Column } from '@prisma/client';
 
 interface EditCardProps {
   column: Column;
@@ -36,14 +22,8 @@ interface EditCardProps {
 }
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Column Name cannot be empty")
-    .max(50, "Column Name cannot be more than 50 characters"),
-  description: z
-    .string()
-    .max(5000, "Column Name cannot be more than 5000 characters")
-    .optional(),
+  name: z.string().min(1, 'Column Name cannot be empty').max(50, 'Column Name cannot be more than 50 characters'),
+  description: z.string().max(5000, 'Column Name cannot be more than 5000 characters').optional(),
 });
 
 function EditColumn({ column, open, setOpen }: EditCardProps) {
@@ -56,8 +36,8 @@ function EditColumn({ column, open, setOpen }: EditCardProps) {
   });
 
   useEffect(() => {
-    form.setValue("name", column.name);
-    form.setValue("description", column.description || undefined);
+    form.setValue('name', column.name);
+    form.setValue('description', column.description || undefined);
   }, [form, column]);
 
   const { toast } = useToast();
@@ -70,8 +50,8 @@ function EditColumn({ column, open, setOpen }: EditCardProps) {
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while editing the column",
-        variant: "destructive",
+        description: 'Something went wrong while editing the column',
+        variant: 'destructive',
       });
       form.reset();
     } finally {
@@ -85,15 +65,13 @@ function EditColumn({ column, open, setOpen }: EditCardProps) {
       open={open}
       onOpenChange={(open) => {
         // change the form state to default
-        form.setValue("name", column.name);
+        form.setValue('name', column.name);
         setOpen(open);
       }}
     >
       <SheetContent className="w-[600px] sm:max-w-none">
         <SheetHeader>
-          <SheetTitle className="text-base">
-            Edit Column {column.name}
-          </SheetTitle>
+          <SheetTitle className="text-base">Edit Column {column.name}</SheetTitle>
         </SheetHeader>
 
         <Form {...form}>
@@ -136,9 +114,7 @@ function EditColumn({ column, open, setOpen }: EditCardProps) {
               <FormMessage />
             </FormItem>
             <Button className="mr-auto mt-4">
-              {form.formState.isSubmitting && (
-                <Loader2 className="mr-2 animate-spin" />
-              )}
+              {form.formState.isSubmitting && <Loader2 className="mr-2 animate-spin" />}
               Update Column
             </Button>
           </form>

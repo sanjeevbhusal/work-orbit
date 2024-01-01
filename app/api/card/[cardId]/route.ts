@@ -1,9 +1,10 @@
-import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/server";
-import { ActivitySubType, ActivityType } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+import { db } from '@/lib/db';
+import { currentUser } from '@clerk/nextjs';
+import { User } from '@clerk/nextjs/server';
+import { ActivitySubType, ActivityType } from '@prisma/client';
 
 const formSchema = z.object({
   columnId: z.string(),
@@ -25,7 +26,7 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
       { error: parsedPayload.error.message },
       {
         status: 400,
-      }
+      },
     );
   }
 
@@ -38,11 +39,11 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
   if (!existingCard) {
     return NextResponse.json(
       {
-        error: "Card not found",
+        error: 'Card not found',
       },
       {
         status: 404,
-      }
+      },
     );
   }
 
@@ -88,10 +89,7 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
 }
 
 const updateFormSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Card Name cannot be empty")
-    .max(50, "Card Name cannot be more than 50 characters"),
+  name: z.string().min(1, 'Card Name cannot be empty').max(50, 'Card Name cannot be more than 50 characters'),
 });
 
 async function PUT(request: NextRequest, { params: { cardId } }: Params) {
@@ -103,7 +101,7 @@ async function PUT(request: NextRequest, { params: { cardId } }: Params) {
       { error: parsedPayload.error.message },
       {
         status: 400,
-      }
+      },
     );
   }
 
@@ -117,10 +115,10 @@ async function PUT(request: NextRequest, { params: { cardId } }: Params) {
 
   if (!existingCard) {
     return NextResponse.json(
-      { error: "Card not found" },
+      { error: 'Card not found' },
       {
         status: 404,
-      }
+      },
     );
   }
 
@@ -145,10 +143,10 @@ async function DELETE(request: NextRequest, { params: { cardId } }: Params) {
 
   if (!existingCard) {
     return NextResponse.json(
-      { error: "Card not found" },
+      { error: 'Card not found' },
       {
         status: 404,
-      }
+      },
     );
   }
 
@@ -161,4 +159,4 @@ async function DELETE(request: NextRequest, { params: { cardId } }: Params) {
   return NextResponse.json({ ok: true });
 }
 
-export { POST, PUT, DELETE };
+export { DELETE,POST, PUT };

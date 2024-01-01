@@ -1,6 +1,7 @@
-import { Logo } from "@/components/logo";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import Link from 'next/link';
+
+import { Logo } from '@/components/logo';
+import { Button } from '@/components/ui/button';
 
 function NavBar() {
   return (
@@ -9,7 +10,7 @@ function NavBar() {
         <Logo />
         <div>
           <Link href="/signin">
-            <Button variant="outline" size={"sm"}>
+            <Button variant="outline" size={'sm'}>
               Login
             </Button>
           </Link>

@@ -1,8 +1,9 @@
-import { getBoard } from "@/actions/getBoard";
-import { NavBar } from "./_components/navbar";
-import { Sidebar } from "./_components/sidebar";
-import { getBoards } from "@/actions/getBoards";
-import { InvalidPath } from "@/components/InvalidPath";
+import { getBoard } from '@/actions/getBoard';
+import { getBoards } from '@/actions/getBoards';
+import { InvalidPath } from '@/components/InvalidPath';
+
+import { NavBar } from './_components/navbar';
+import { Sidebar } from './_components/sidebar';
 
 interface BoardLayoutProps {
   params: {
@@ -11,10 +12,7 @@ interface BoardLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function BoardLayout({
-  children,
-  params,
-}: BoardLayoutProps) {
+export default async function BoardLayout({ children, params }: BoardLayoutProps) {
   const board = await getBoard(params.boardId);
   const allBoards = await getBoards();
 
@@ -26,10 +24,7 @@ export default async function BoardLayout({
     <div className="h-screen">
       <NavBar />
       <div className="mx-auto h-[calc(100%-65px)] flex">
-        <Sidebar
-          currentBoard={board}
-          otherBoards={allBoards.filter((b) => b.id !== board.id)}
-        />
+        <Sidebar currentBoard={board} otherBoards={allBoards.filter((b) => b.id !== board.id)} />
         {children}
       </div>
     </div>

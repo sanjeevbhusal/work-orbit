@@ -1,5 +1,5 @@
-import { Logo } from "@/components/logo";
-import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import { Logo } from '@/components/logo';
+import { OrganizationSwitcher, UserButton } from '@clerk/nextjs';
 
 function NavBar() {
   return (
@@ -16,13 +16,13 @@ function NavBar() {
             appearance={{
               elements: {
                 rootBox: {
-                  height: "30px",
+                  height: '30px',
                 },
                 organizationPreviewAvatarContainer: {
-                  height: "30px",
+                  height: '30px',
                 },
                 organizationPreviewAvatarBox: {
-                  height: "30px",
+                  height: '30px',
                 },
               },
             }}
@@ -41,13 +41,13 @@ function NavBar() {
               appearance={{
                 elements: {
                   rootBox: {
-                    height: "30px",
+                    height: '30px',
                   },
                   organizationPreviewAvatarContainer: {
-                    height: "30px",
+                    height: '30px',
                   },
                   organizationPreviewAvatarBox: {
-                    height: "30px",
+                    height: '30px',
                   },
                 },
               }}

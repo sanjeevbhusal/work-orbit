@@ -1,34 +1,35 @@
-"use client";
+'use client';
 
-import { BsListTask } from "react-icons/bs";
-import { TbActivity } from "react-icons/tb";
-import { IoSettingsOutline } from "react-icons/io5";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { BsListTask } from 'react-icons/bs';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { TbActivity } from 'react-icons/tb';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 const sideBarLinks = [
   {
-    name: "Boards",
+    name: 'Boards',
     icon: <BsListTask />,
-    url: "/boards",
+    url: '/boards',
   },
   {
-    name: "Activity",
+    name: 'Activity',
     icon: <TbActivity />,
-    url: "/activity",
+    url: '/activity',
   },
   {
-    name: "Settings",
+    name: 'Settings',
     icon: <IoSettingsOutline />,
-    url: "/settings",
+    url: '/settings',
   },
 ];
 
 function Sidebar() {
   const pathname = usePathname();
-  console.log(pathname, pathname.split("/"));
+  console.log(pathname, pathname.split('/'));
 
   return (
     <div className="py-4 border-r pr-2">
@@ -36,13 +37,10 @@ function Sidebar() {
         {sideBarLinks.map((link) => (
           <Link href={`${pathname}${link.url}`} key={link.name}>
             <Button
-              variant={"ghost"}
-              className={cn(
-                "justify-start gap-2 cursor-pointer font-normal pr-8 w-48 hover:bg-slate-200",
-                {
-                  "bg-slate-200": pathname.includes(link.url),
-                }
-              )}
+              variant={'ghost'}
+              className={cn('justify-start gap-2 cursor-pointer font-normal pr-8 w-48 hover:bg-slate-200', {
+                'bg-slate-200': pathname.includes(link.url),
+              })}
             >
               {link.icon}
               <h3 className="text-sm">{link.name}</h3>
@@ -55,9 +53,9 @@ function Sidebar() {
         {sideBarLinks.map((link) => (
           <Link href={`${pathname}${link.url}`} key={link.name}>
             <Button
-              variant={"ghost"}
-              className={cn("text-lg hover:bg-slate-200", {
-                "bg-slate-200": pathname.includes(link.url),
+              variant={'ghost'}
+              className={cn('text-lg hover:bg-slate-200', {
+                'bg-slate-200': pathname.includes(link.url),
               })}
             >
               {link.icon}

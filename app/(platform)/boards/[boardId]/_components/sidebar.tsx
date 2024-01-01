@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import { IoSettingsOutline } from "react-icons/io5";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Board } from "@prisma/client";
-import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { TbActivity } from "react-icons/tb";
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { IoSettingsOutline } from 'react-icons/io5';
+import { TbActivity } from 'react-icons/tb';
+
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Board } from '@prisma/client';
 
 const sideBarLinks = [
   // {
@@ -43,12 +44,7 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
         <Link href={`/boards/${currentBoard.id}`}>
           <div className="flex items-center gap-2 mt-2 hover:bg-slate-200 cursor-pointer py-2 px-4">
             <div className="w-12 h-8 relative ">
-              <Image
-                src={currentBoard.smallImageUrl}
-                alt={currentBoard.name}
-                fill
-                className="rounded-sm"
-              />
+              <Image src={currentBoard.smallImageUrl} alt={currentBoard.name} fill className="rounded-sm" />
             </div>
 
             <p className="text-sm text-neutal-500">{currentBoard.name}</p>
@@ -56,12 +52,9 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
         </Link>
         <Link href={`/boards/${currentBoard.id}/settings`}>
           <Button
-            className={cn(
-              "mt-2 flex justify-start gap-2 w-full hover:bg-slate-200",
-              {
-                "bg-slate-200": pathname.includes("/settings"),
-              }
-            )}
+            className={cn('mt-2 flex justify-start gap-2 w-full hover:bg-slate-200', {
+              'bg-slate-200': pathname.includes('/settings'),
+            })}
             variant="ghost"
           >
             <IoSettingsOutline />
@@ -70,12 +63,9 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
         </Link>
         <Link href={`/boards/${currentBoard.id}/activity`}>
           <Button
-            className={cn(
-              "mt-2 flex justify-start gap-2 w-full hover:bg-slate-200",
-              {
-                "bg-slate-200": pathname.includes("/activity"),
-              }
-            )}
+            className={cn('mt-2 flex justify-start gap-2 w-full hover:bg-slate-200', {
+              'bg-slate-200': pathname.includes('/activity'),
+            })}
             variant="ghost"
           >
             <TbActivity />
@@ -87,20 +77,13 @@ function Sidebar({ currentBoard, otherBoards }: SidebarProps) {
         <p className="text-sm font-medium px-4">Other Boards</p>
         <div className="flex flex-col gap-2">
           {otherBoards.length === 0 ? (
-            <p className="py-2 px-4 font-semibold text-sm text-neutal-500">
-              No Boards available
-            </p>
+            <p className="py-2 px-4 font-semibold text-sm text-neutal-500">No Boards available</p>
           ) : (
             otherBoards.map((board) => (
               <Link key={board.id} href={`/boards/${board.id}`}>
                 <div className="flex items-center gap-2 mt-2 hover:bg-slate-200 cursor-pointer py-2 px-4">
                   <div className="w-12 h-8 relative ">
-                    <Image
-                      src={board.smallImageUrl}
-                      alt={board.name}
-                      fill
-                      className="rounded-sm"
-                    />
+                    <Image src={board.smallImageUrl} alt={board.name} fill className="rounded-sm" />
                   </div>
                   <p className="text-sm text-neutal-500">{board.name}</p>
                 </div>

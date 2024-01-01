@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from '@/lib/db';
 
 async function getBoard(boardId: string) {
   const board = await db.board.findUnique({

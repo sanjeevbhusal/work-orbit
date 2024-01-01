@@ -1,10 +1,11 @@
-import { BoardImage } from "@/lib/types";
-import { unsplash } from "@/lib/unsplash";
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+
+import { BoardImage } from '@/lib/types';
+import { unsplash } from '@/lib/unsplash';
 
 export async function GET() {
   const response = await unsplash.photos.getRandom({
-    collectionIds: ["317099"],
+    collectionIds: ['317099'],
     count: 10,
   });
 

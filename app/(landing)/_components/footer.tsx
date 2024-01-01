@@ -1,6 +1,7 @@
-import { Logo } from "@/components/logo";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import Link from 'next/link';
+
+import { Logo } from '@/components/logo';
+import { Button } from '@/components/ui/button';
 
 function Footer() {
   return (
@@ -9,7 +10,7 @@ function Footer() {
         <Logo />
         <div>
           <Link href="/terms-of-service">
-            <Button size={"sm"} variant="link">
+            <Button size={'sm'} variant="link">
               Terms of Service
             </Button>
           </Link>

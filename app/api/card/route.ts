@@ -1,26 +1,24 @@
-import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs";
-import { User } from "@clerk/nextjs/server";
-import { ActivitySubType, ActivityType } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+import { db } from '@/lib/db';
+import { currentUser } from '@clerk/nextjs';
+import { User } from '@clerk/nextjs/server';
+import { ActivitySubType, ActivityType } from '@prisma/client';
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Card Name cannot be empty")
-    .max(50, "Card Name cannot be more than 50 characters"),
+  name: z.string().min(1, 'Card Name cannot be empty').max(50, 'Card Name cannot be more than 50 characters'),
 });
 
 async function POST(request: NextRequest) {
-  const columnId = request.nextUrl.searchParams.get("columnId");
+  const columnId = request.nextUrl.searchParams.get('columnId');
 
   if (!columnId) {
     return NextResponse.json(
       {
-        error: "Column ID is required",
+        error: 'Column ID is required',
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -36,9 +34,9 @@ async function POST(request: NextRequest) {
   if (!existingColumn) {
     return NextResponse.json(
       {
-        error: "Column does not exist",
+        error: 'Column does not exist',
       },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -50,7 +48,7 @@ async function POST(request: NextRequest) {
       {
         error: validatedPayload.error,
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 

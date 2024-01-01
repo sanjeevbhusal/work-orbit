@@ -1,9 +1,10 @@
-import { Draggable } from "react-beautiful-dnd";
+import { useState } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 
-import { EditCard } from "./edit-card";
-import { Card } from "@prisma/client";
-import { useState } from "react";
-import { CardDetails } from "./card-detail";
+import { Card } from '@prisma/client';
+
+import { CardDetails } from './card-detail';
+import { EditCard } from './edit-card';
 
 interface CardProps {
   card: Card;
@@ -29,11 +30,7 @@ function Card({ card, index }: CardProps) {
           </div>
         )}
       </Draggable>
-      <CardDetails
-        card={card}
-        open={openCardDetails}
-        onOpenChange={(open) => setOpenCardDetails(open)}
-      />
+      <CardDetails card={card} open={openCardDetails} onOpenChange={(open) => setOpenCardDetails(open)} />
     </div>
   );
 }

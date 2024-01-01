@@ -1,13 +1,13 @@
-import { CreateBoard } from "./_components/create-board";
-import { getBoards } from "@/actions/getBoards";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
-import Image from "next/image";
+import { getBoards } from '@/actions/getBoards';
+import { PageHeading } from '@/components/page-heading';
 
-import { NavBar } from "./_components/navbar";
-import { Sidebar } from "./_components/sidebar";
-import { ListBoard } from "./_components/list-board";
-import { PageHeading } from "@/components/page-heading";
+import { CreateBoard } from './_components/create-board';
+import { ListBoard } from './_components/list-board';
+import { NavBar } from './_components/navbar';
+import { Sidebar } from './_components/sidebar';
 
 export default async function BoardPage() {
   const boards = await getBoards();

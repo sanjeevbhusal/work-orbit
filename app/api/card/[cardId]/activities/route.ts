@@ -1,5 +1,6 @@
-import { db } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+
+import { db } from '@/lib/db';
 
 interface Params {
   params: {
@@ -7,10 +8,7 @@ interface Params {
   };
 }
 
-export async function GET(
-  request: NextRequest,
-  { params: { cardId } }: Params
-) {
+export async function GET(request: NextRequest, { params: { cardId } }: Params) {
   const activities = await db.cardActivity.findMany({
     where: {
       cardId: cardId,

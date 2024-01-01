@@ -1,33 +1,22 @@
 // when you copy a card, you are basically creating the card again. Hence, this is similar to creat-card.
 
-import { Card } from "@prisma/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { Loader2 } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-
-import { Label } from "@/components/ui/label";
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/components/ui/use-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Card } from '@prisma/client';
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Card Name cannot be empty")
-    .max(50, "Card Name cannot be more than 50 characters"),
+  name: z.string().min(1, 'Card Name cannot be empty').max(50, 'Card Name cannot be more than 50 characters'),
 });
 
 interface CopyCardProps {
@@ -41,12 +30,12 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      name: '',
     },
   });
 
   useEffect(() => {
-    form.setValue("name", card.name);
+    form.setValue('name', card.name);
   }, [card]);
 
   const { toast } = useToast();
@@ -61,8 +50,8 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
       router.refresh();
     } catch (error) {
       toast({
-        description: "Something went wrong while copying the card",
-        variant: "destructive",
+        description: 'Something went wrong while copying the card',
+        variant: 'destructive',
       });
     } finally {
       form.reset();
@@ -73,9 +62,7 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
   return (
     <div className="mt-4">
       <Label>Copy this Card</Label>
-      <p className="text-xs mt-1">
-        The new card will be copied in the same column as this card.
-      </p>
+      <p className="text-xs mt-1">The new card will be copied in the same column as this card.</p>
       {showCopyCardInput ? (
         <div className="mt-2">
           <Form {...form}>
@@ -86,10 +73,7 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Enter the title for this card"
-                      />
+                      <Input {...field} placeholder="Enter the title for this card" />
                     </FormControl>
 
                     <FormMessage />
@@ -97,14 +81,12 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
                 )}
               />
               <div className="ml-auto w-fit flex justify-between gap-2 mt-2">
-                <Button variant={"primary"} onClick={() => {}} size="sm">
-                  {form.formState.isSubmitting && (
-                    <Loader2 className="animate-spin mr-2" />
-                  )}
+                <Button variant={'primary'} onClick={() => {}} size="sm">
+                  {form.formState.isSubmitting && <Loader2 className="animate-spin mr-2" />}
                   Copy Card
                 </Button>
                 <Button
-                  variant={"destructive"}
+                  variant={'destructive'}
                   className="text-sm"
                   onClick={() => setShowCopyCardInput(false)}
                   disabled={form.formState.isSubmitting}
@@ -117,12 +99,7 @@ function CopyCard({ card, onSuccess }: CopyCardProps) {
           </Form>
         </div>
       ) : (
-        <Button
-          onClick={() => setShowCopyCardInput(true)}
-          variant="primary"
-          size="sm"
-          className="mt-2"
-        >
+        <Button onClick={() => setShowCopyCardInput(true)} variant="primary" size="sm" className="mt-2">
           Copy Card
         </Button>
       )}
