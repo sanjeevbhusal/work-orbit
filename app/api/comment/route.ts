@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       },
       {
         status: 400,
-      },
+      }
     );
   }
   const { text, cardId } = parsedPayload.data;
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       },
       {
         status: 404,
-      },
+      }
     );
   }
 
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
       },
       {
         status: 400,
-      },
+      }
     );
   }
 
@@ -83,13 +83,16 @@ export async function GET(request: NextRequest) {
       },
       {
         status: 404,
-      },
+      }
     );
   }
 
   const comments = await db.comment.findMany({
     where: {
       cardId,
+    },
+    orderBy: {
+      createdAt: 'desc',
     },
   });
 

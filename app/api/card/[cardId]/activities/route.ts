@@ -8,7 +8,10 @@ interface Params {
   };
 }
 
-export async function GET(request: NextRequest, { params: { cardId } }: Params) {
+export async function GET(
+  request: NextRequest,
+  { params: { cardId } }: Params
+) {
   const activities = await db.cardActivity.findMany({
     where: {
       cardId: cardId,
@@ -17,6 +20,11 @@ export async function GET(request: NextRequest, { params: { cardId } }: Params) 
       Activity: true,
       currentColumn: true,
       previousColumn: true,
+    },
+    orderBy: {
+      Activity: {
+        createdAt: 'desc',
+      },
     },
   });
   return NextResponse.json({ data: activities });
