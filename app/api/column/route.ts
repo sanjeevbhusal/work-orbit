@@ -7,7 +7,10 @@ import { currentUser } from '@clerk/nextjs';
 import { ActivitySubType, ActivityType } from '@prisma/client';
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Column Name cannot be empty').max(50, 'Column Name cannot be more than 30 characters'),
+  name: z
+    .string()
+    .min(1, 'Column Name cannot be empty')
+    .max(50, 'Column Name cannot be more than 30 characters'),
 });
 
 async function POST(request: NextRequest) {
@@ -18,7 +21,7 @@ async function POST(request: NextRequest) {
       {
         error: 'Board ID is required',
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -33,7 +36,7 @@ async function POST(request: NextRequest) {
       {
         error: 'Board does not exist',
       },
-      { status: 404 },
+      { status: 404 }
     );
   }
 
@@ -45,7 +48,7 @@ async function POST(request: NextRequest) {
       {
         error: validatedPayload.error,
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -64,7 +67,6 @@ async function POST(request: NextRequest) {
     data: {
       userId: user.id,
       subType: ActivitySubType.COLUMN,
-      createdAt: new Date(),
     },
   });
 

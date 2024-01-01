@@ -7,7 +7,10 @@ import { User } from '@clerk/nextjs/server';
 import { ActivitySubType, ActivityType } from '@prisma/client';
 
 const formSchema = z.object({
-  name: z.string().min(1, 'Card Name cannot be empty').max(50, 'Card Name cannot be more than 50 characters'),
+  name: z
+    .string()
+    .min(1, 'Card Name cannot be empty')
+    .max(50, 'Card Name cannot be more than 50 characters'),
 });
 
 async function POST(request: NextRequest) {
@@ -18,7 +21,7 @@ async function POST(request: NextRequest) {
       {
         error: 'Column ID is required',
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -36,7 +39,7 @@ async function POST(request: NextRequest) {
       {
         error: 'Column does not exist',
       },
-      { status: 404 },
+      { status: 404 }
     );
   }
 
@@ -48,7 +51,7 @@ async function POST(request: NextRequest) {
       {
         error: validatedPayload.error,
       },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -68,7 +71,6 @@ async function POST(request: NextRequest) {
   const activity = await db.activity.create({
     data: {
       userId: user.id,
-      createdAt: new Date(),
       subType: ActivitySubType.CARD,
     },
   });

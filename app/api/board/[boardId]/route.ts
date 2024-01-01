@@ -11,7 +11,10 @@ const updateBoardFormSchema = z.object({
     .string()
     .min(2, 'Workspace Name must be atleast 2 characters')
     .max(50, 'Workspace Name cannot be more than 25 characters'),
-  description: z.string().max(5000, 'Description cannot be more than 5000 characters').optional(),
+  description: z
+    .string()
+    .max(5000, 'Description cannot be more than 5000 characters')
+    .optional(),
 });
 
 interface Params {
@@ -20,7 +23,10 @@ interface Params {
   };
 }
 
-export async function PUT(request: NextRequest, { params: { boardId } }: Params) {
+export async function PUT(
+  request: NextRequest,
+  { params: { boardId } }: Params
+) {
   const payload = await request.json();
   const parsedPayload = updateBoardFormSchema.safeParse(payload);
 
@@ -29,7 +35,7 @@ export async function PUT(request: NextRequest, { params: { boardId } }: Params)
       { error: parsedPayload.error.message },
       {
         status: 400,
-      },
+      }
     );
   }
 
@@ -47,7 +53,7 @@ export async function PUT(request: NextRequest, { params: { boardId } }: Params)
       },
       {
         status: 404,
-      },
+      }
     );
   }
 
@@ -73,7 +79,7 @@ export async function PUT(request: NextRequest, { params: { boardId } }: Params)
       },
       {
         status: 409,
-      },
+      }
     );
   }
 
@@ -93,7 +99,6 @@ export async function PUT(request: NextRequest, { params: { boardId } }: Params)
   const activity = await db.activity.create({
     data: {
       userId: user.id,
-      createdAt: new Date(),
       subType: ActivitySubType.BOARD,
     },
   });
@@ -111,7 +116,10 @@ export async function PUT(request: NextRequest, { params: { boardId } }: Params)
   return NextResponse.json({ ok: true });
 }
 
-export async function DELETE(request: NextRequest, { params: { boardId } }: Params) {
+export async function DELETE(
+  request: NextRequest,
+  { params: { boardId } }: Params
+) {
   // Verify board exists.
   const board = await db.board.findFirst({
     where: {
@@ -126,7 +134,7 @@ export async function DELETE(request: NextRequest, { params: { boardId } }: Para
       },
       {
         status: 404,
-      },
+      }
     );
   }
 

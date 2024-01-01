@@ -25,7 +25,7 @@ async function POST(request: NextRequest) {
       { error: parsedPayload.error.message },
       {
         status: 400,
-      },
+      }
     );
   }
 
@@ -45,7 +45,7 @@ async function POST(request: NextRequest) {
       { error: 'Board with this name already exists' },
       {
         status: 409,
-      },
+      }
     );
   }
 
@@ -64,7 +64,6 @@ async function POST(request: NextRequest) {
   const activity = await db.activity.create({
     data: {
       userId: user.id,
-      createdAt: new Date(),
       subType: ActivitySubType.BOARD,
     },
   });

@@ -26,8 +26,14 @@ async function DELETE(request: NextRequest, { params: { columnId } }: Params) {
 }
 
 const editColumnFormSchema = z.object({
-  name: z.string().min(1, 'Column Name cannot be empty').max(50, 'Column Name cannot be more than 50 characters'),
-  description: z.string().max(5000, 'Column Name cannot be more than 5000 characters').optional(),
+  name: z
+    .string()
+    .min(1, 'Column Name cannot be empty')
+    .max(50, 'Column Name cannot be more than 50 characters'),
+  description: z
+    .string()
+    .max(5000, 'Column Name cannot be more than 5000 characters')
+    .optional(),
 });
 
 async function PUT(request: NextRequest, { params: { columnId } }: Params) {
@@ -39,7 +45,7 @@ async function PUT(request: NextRequest, { params: { columnId } }: Params) {
       { error: parsedPayload.error.message },
       {
         status: 400,
-      },
+      }
     );
   }
 
@@ -54,7 +60,7 @@ async function PUT(request: NextRequest, { params: { columnId } }: Params) {
       { error: 'Column not found' },
       {
         status: 404,
-      },
+      }
     );
   }
 
@@ -77,7 +83,6 @@ async function PUT(request: NextRequest, { params: { columnId } }: Params) {
   const activity = await db.activity.create({
     data: {
       userId: user.id,
-      createdAt: new Date(),
       subType: ActivitySubType.COLUMN,
     },
   });

@@ -26,7 +26,7 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
       { error: parsedPayload.error.message },
       {
         status: 400,
-      },
+      }
     );
   }
 
@@ -43,7 +43,7 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
       },
       {
         status: 404,
-      },
+      }
     );
   }
 
@@ -70,7 +70,6 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
   const activity = await db.activity.create({
     data: {
       userId: user.id,
-      createdAt: new Date(),
       subType: ActivitySubType.CARD,
     },
   });
@@ -89,7 +88,10 @@ async function POST(request: NextRequest, { params: { cardId } }: Params) {
 }
 
 const updateFormSchema = z.object({
-  name: z.string().min(1, 'Card Name cannot be empty').max(50, 'Card Name cannot be more than 50 characters'),
+  name: z
+    .string()
+    .min(1, 'Card Name cannot be empty')
+    .max(50, 'Card Name cannot be more than 50 characters'),
 });
 
 async function PUT(request: NextRequest, { params: { cardId } }: Params) {
@@ -101,7 +103,7 @@ async function PUT(request: NextRequest, { params: { cardId } }: Params) {
       { error: parsedPayload.error.message },
       {
         status: 400,
-      },
+      }
     );
   }
 
@@ -118,7 +120,7 @@ async function PUT(request: NextRequest, { params: { cardId } }: Params) {
       { error: 'Card not found' },
       {
         status: 404,
-      },
+      }
     );
   }
 
@@ -146,7 +148,7 @@ async function DELETE(request: NextRequest, { params: { cardId } }: Params) {
       { error: 'Card not found' },
       {
         status: 404,
-      },
+      }
     );
   }
 
@@ -159,4 +161,4 @@ async function DELETE(request: NextRequest, { params: { cardId } }: Params) {
   return NextResponse.json({ ok: true });
 }
 
-export { DELETE,POST, PUT };
+export { DELETE, POST, PUT };
