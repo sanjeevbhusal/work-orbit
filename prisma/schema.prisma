@@ -74,14 +74,16 @@ model Activity {
 }
 
 model BoardActivity {
-  id           String       @id @default(uuid())
-  Activity     Activity     @relation(fields: [activityId], references: [id])
-  activityId   String
-  boardId      String
-  Board        Board        @relation(fields: [boardId], references: [id])
-  activityType ActivityType
-  currentName  String?
-  previousName String?
+  id               String       @id @default(uuid())
+  Activity         Activity     @relation(fields: [activityId], references: [id])
+  activityId       String
+  boardId          String
+  Board            Board        @relation(fields: [boardId], references: [id])
+  activityType     ActivityType
+  currentName      String?
+  previousName     String?
+  currentImageUrl  String?
+  previousImageUrl String?
 }
 
 model ColumnActivity {

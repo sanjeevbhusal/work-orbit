@@ -9,9 +9,24 @@ import { useForm } from 'react-hook-form';
 import { IoCheckmark } from 'react-icons/io5';
 import * as z from 'zod';
 
+import { BackgroundImageSelect } from '@/components/BackgroundImageSelect';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
@@ -32,7 +47,9 @@ function CreateBoard() {
   const [isImagesLoading, setIsImagesLoading] = useState(false);
 
   const [showCreateBoardModal, setShowCreateBoardModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<BoardImage | undefined>(undefined);
+  const [selectedImage, setSelectedImage] = useState<BoardImage | undefined>(
+    undefined
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,6 +61,7 @@ function CreateBoard() {
   const router = useRouter();
 
   useEffect(() => {
+    // TODO: Move this to react query
     async function fetchImages() {
       setIsImagesLoading(true);
       try {
@@ -95,7 +113,10 @@ function CreateBoard() {
 
   return (
     <div>
-      <Dialog open={showCreateBoardModal} onOpenChange={(open) => setShowCreateBoardModal(open)}>
+      <Dialog
+        open={showCreateBoardModal}
+        onOpenChange={(open) => setShowCreateBoardModal(open)}
+      >
         <DialogTrigger asChild>
           <div>
             <Button
@@ -120,47 +141,21 @@ function CreateBoard() {
           <DialogHeader>
             <DialogTitle className="text-left">Create Board</DialogTitle>
           </DialogHeader>
-          {selectedImage && (
-            <div className="px-4 py-2 w-fit rounded-md mx-auto">
-              <div className="relative w-[220px] h-[120px] flex items-center justify-center">
-                <Image src={selectedImage.small} alt={selectedImage.description} fill className="rounded-md z-[-1]" />
-                <Image
-                  src={ColumnsImage}
-                  alt="Columns inside the Board"
-                  width={180}
-                  height={180}
-                  className="rounded-md"
-                />
-              </div>
-            </div>
-          )}
 
-          <Label>Background</Label>
-          {isImagesLoading ? (
-            <Loader2 className="animate-spin mx-auto" />
-          ) : (
-            <div className="flex flex-wrap gap-4">
-              {images.map((image) => (
-                <div
-                  key={image.small}
-                  className="h-12 w-24 relative cursor-pointer flex items-center justify-center hover:opacity-80"
-                  onClick={() => setSelectedImage(image)}
-                >
-                  <Image src={image.small} alt={image.description} fill className="rounded-md" />
-
-                  {selectedImage === image && (
-                    <>
-                      <div className="absolute inset-0 bg-black/20"></div>
-                      <IoCheckmark className="z-20 text-white text-2xl font-bold" />
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+          <BackgroundImageSelect
+            label="Background"
+            images={images}
+            loading={isImagesLoading}
+            onImageSelect={setSelectedImage}
+            selectedImage={selectedImage}
+            key={selectedImage?.small}
+          />
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="pt-4 space-y-8">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="pt-4 space-y-8"
+            >
               <FormField
                 control={form.control}
                 name="boardName"
@@ -168,7 +163,10 @@ function CreateBoard() {
                   <FormItem className="text-left">
                     <FormLabel>Board Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Marketing, Software Engineering, Finance etc" {...field} />
+                      <Input
+                        placeholder="Marketing, Software Engineering, Finance etc"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>This has to be unique.</FormDescription>
                     <FormMessage />
@@ -181,7 +179,9 @@ function CreateBoard() {
                 className="ml-auto flex items-center justify-center"
                 disabled={form.formState.isSubmitting || !selectedImage}
               >
-                {form.formState.isSubmitting && <Loader2 className="animate-spin mr-2" />}
+                {form.formState.isSubmitting && (
+                  <Loader2 className="animate-spin mr-2" />
+                )}
                 Create
               </Button>
             </form>

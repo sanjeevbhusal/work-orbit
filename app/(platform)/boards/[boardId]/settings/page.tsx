@@ -9,7 +9,10 @@ interface SettingsPageProps {
   };
 }
 
-export default async function SettingsPage({ params: { boardId } }: SettingsPageProps) {
+export default async function SettingsPage({
+  params: { boardId },
+}: SettingsPageProps) {
   const board = (await getBoard(boardId)) as BoardWithColumnAndCards;
+  console.log({ board });
   return <Settings board={board} />;
 }

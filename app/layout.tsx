@@ -10,7 +10,10 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'WorkOrbit',
+  title: {
+    template: `%s | WorkOrbit`,
+    default: 'WorkOrbit',
+  },
   description: "WorkOrbit helps you manage your entire organization's work",
   icons: [
     {
@@ -20,7 +23,11 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body className={cn(inter.className, 'h-screen')}>

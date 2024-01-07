@@ -1,3 +1,6 @@
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+
 import { getBoard } from '@/actions/getBoard';
 import { getBoards } from '@/actions/getBoards';
 import { InvalidPath } from '@/components/InvalidPath';
@@ -12,7 +15,20 @@ interface BoardLayoutProps {
   children: React.ReactNode;
 }
 
-export default async function BoardLayout({ children, params }: BoardLayoutProps) {
+export async function generateMetadata({
+  params: { boardId },
+}: BoardLayoutProps): Promise<Metadata> {
+  const board = await getBoard(boardId);
+
+  return {
+    title: board?.name || 'Board',
+  };
+}
+
+export default async function BoardLayout({
+  children,
+  params,
+}: BoardLayoutProps) {
   const board = await getBoard(params.boardId);
   const allBoards = await getBoards();
 
@@ -24,7 +40,10 @@ export default async function BoardLayout({ children, params }: BoardLayoutProps
     <div className="h-screen">
       <NavBar />
       <div className="mx-auto h-[calc(100%-65px)] flex">
-        <Sidebar currentBoard={board} otherBoards={allBoards.filter((b) => b.id !== board.id)} />
+        <Sidebar
+          currentBoard={board}
+          otherBoards={allBoards.filter((b) => b.id !== board.id)}
+        />
         {children}
       </div>
     </div>

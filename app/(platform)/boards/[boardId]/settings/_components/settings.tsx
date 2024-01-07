@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import axios, { AxiosError } from 'axios';
 import { Loader2 } from 'lucide-react';
@@ -9,14 +10,25 @@ import * as z from 'zod';
 
 import { PageHeading } from '@/components/page-heading';
 import { PageSubheading } from '@/components/page-subheading';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { BoardWithColumnAndCards } from '@/lib/types';
+import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { ChangeBackgroundImage } from './change-background-image';
 import { DeleteBoard } from './delete-board';
 
 const formSchema = z.object({
@@ -24,7 +36,10 @@ const formSchema = z.object({
     .string()
     .min(2, 'Board name cannot be less than 2 characters')
     .max(50, 'Board name cannot be more than 50 characters'),
-  description: z.string().max(5000, 'Description cannot be more than 5000 characters').optional(),
+  description: z
+    .string()
+    .max(5000, 'Description cannot be more than 5000 characters')
+    .optional(),
 });
 
 interface SettingsPageProps {
@@ -91,12 +106,21 @@ function Settings({ board }: SettingsPageProps) {
     }
   }
 
+  console.log(board);
+
+  const [showImagePicker, setShowImagePicker] = useState(false);
+
   return (
     <div className="py-4 px-8">
       <PageHeading>Settings</PageHeading>
-      <PageSubheading className="mt-2">Manage your board settings</PageSubheading>
+      <PageSubheading className="mt-2">
+        Manage your board settings
+      </PageSubheading>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-[800px] mt-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 w-[800px] mt-8"
+        >
           <FormField
             control={form.control}
             name="name"
@@ -128,12 +152,47 @@ function Settings({ board }: SettingsPageProps) {
               </FormItem>
             )}
           />
+
+          {/* <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="text-left">
+                <FormLabel>Board Image</FormLabel>
+                <FormControl>
+                  <>
+                    <Image
+                      src={board.largeImageUrl}
+                      width={200}
+                      height={100}
+                      alt="image"
+                      className="mt-4 rounded-lg"
+                    />
+                    <Button
+                      className={'mt-4'}
+                      variant="outline"
+                      size="sm"
+                      onClick={showImagePicker}
+                    >
+                      Choose another Image
+                    </Button>
+                  </>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          /> */}
+
           <Button type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting && <Loader2 className="mr-2 animate-spin" />}
+            {form.formState.isSubmitting && (
+              <Loader2 className="mr-2 animate-spin" />
+            )}
             Update Board
           </Button>
         </form>
       </Form>
+
+      <ChangeBackgroundImage board={board} />
       <DeleteBoard board={board} />
     </div>
   );
