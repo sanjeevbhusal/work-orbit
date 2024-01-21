@@ -85,14 +85,15 @@ function CreateBoard() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const image = selectedImage as BoardImage;
     try {
-      await axios.post('/api/board', {
+      const response = await axios.post('/api/board', {
         name: values.boardName,
         smallImageUrl: image.small,
         largeImageUrl: image.large,
       });
-      router.refresh();
-      setShowCreateBoardModal(false);
       form.reset();
+      setShowCreateBoardModal(false);
+      const boardId = response.data.data.id;
+      router.push(`/boards/${boardId}`);
     } catch (e) {
       const error = e as AxiosError;
       console.log(error.response);

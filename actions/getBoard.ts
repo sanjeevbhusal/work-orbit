@@ -8,7 +8,14 @@ async function getBoard(boardId: string) {
     include: {
       columns: {
         include: {
-          cards: true,
+          cards: {
+            orderBy: {
+              index: 'asc',
+            },
+          },
+        },
+        orderBy: {
+          index: 'asc',
         },
       },
     },

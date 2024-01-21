@@ -55,13 +55,27 @@ async function POST(request: NextRequest) {
     );
   }
 
+  const lastIndexCard = await db.card.findFirst({
+    where: {
+      columnId,
+    },
+    orderBy: {
+      index: 'desc',
+    },
+    select: {
+      index: true,
+    },
+  });
+
+  const nextIndex = lastIndexCard ? lastIndexCard.index + 1 : 0;
+
   const { name } = validatedPayload.data;
 
   const card = await db.card.create({
     data: {
       name,
       columnId,
-      index: existingColumn.cards.length + 1,
+      index: nextIndex,
     },
   });
 

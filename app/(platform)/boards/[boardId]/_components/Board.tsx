@@ -6,7 +6,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { resetServerContext } from 'react-beautiful-dnd';
 
 import { BoardWithColumnAndCards } from '@/lib/types';
-import { getBoardCards,getBoardColumns } from '@/lib/utils';
+import { getBoardCards, getBoardColumns } from '@/lib/utils';
 
 import { AddColumn } from './add-column';
 import { Column as BoardColumn } from './Column';
@@ -20,9 +20,20 @@ resetServerContext();
 function Board({ board }: BoardProps) {
   const router = useRouter();
 
-  async function updateCard({ id, columnId, index }: { id: string; columnId: string; index: number }) {
+  async function updateCard({
+    id,
+    columnId,
+    index,
+  }: {
+    id: string;
+    columnId: string;
+    index: number;
+  }) {
     try {
-      axios.post(`/api/card/${id}`, { columnId, index });
+      axios.post(`/api/card/${id}`, {
+        destinationColumnId: columnId,
+        destinationCardIndex: index,
+      });
       router.refresh();
     } catch (error) {
       console.log(error);

@@ -27,6 +27,7 @@ model Column {
   id                   String           @id @default(uuid())
   name                 String
   description          String?
+  index                Int
   Board                Board            @relation(references: [id], fields: [boardId], onDelete: Cascade)
   boardId              String
   cards                Card[]
@@ -102,7 +103,7 @@ model CardActivity {
   Activity         Activity     @relation(fields: [activityId], references: [id])
   activityId       String
   cardId           String
-  card             Card         @relation(fields: [cardId], references: [id])
+  card             Card         @relation(fields: [cardId], references: [id], onDelete: Cascade)
   activityType     ActivityType
   previousColumnId String?
   currentColumnId  String

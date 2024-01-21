@@ -17,6 +17,7 @@ const headingFont = localFont({
 function getBoardColumns(board: BoardWithColumnAndCards) {
   return board.columns.map((column) => ({
     id: column.id,
+    index: column.index,
     name: column.name,
     description: column.description,
   }));
@@ -31,4 +32,4 @@ function getBoardCards(board: BoardWithColumnAndCards) {
   return cards;
 }
 
-export { cn, getBoardCards,getBoardColumns, headingFont };
+export { cn, getBoardCards, getBoardColumns, headingFont };

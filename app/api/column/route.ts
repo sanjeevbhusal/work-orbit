@@ -54,10 +54,26 @@ async function POST(request: NextRequest) {
 
   const { name } = validatedPayload.data;
 
+  // calculate the last index column.
+  const lastIndexColumn = await db.column.findFirst({
+    where: {
+      boardId,
+    },
+    orderBy: {
+      index: 'desc',
+    },
+    select: {
+      index: true,
+    },
+  });
+
+  const columnIndex = lastIndexColumn ? lastIndexColumn.index + 1 : 0;
+
   const column = await db.column.create({
     data: {
       name,
       boardId,
+      index: columnIndex,
     },
   });
 

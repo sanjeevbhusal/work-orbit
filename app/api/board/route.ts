@@ -76,7 +76,7 @@ async function POST(request: NextRequest) {
     },
   });
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ data: board });
 }
 
 export { POST };

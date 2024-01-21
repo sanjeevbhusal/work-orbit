@@ -19,7 +19,10 @@ function Column({ column }: ColumnProps) {
     <div className="w-96 py-2 bg-[#F5F8FA] rounded-lg max-h-full shrink-0 flex flex-col">
       <div className="flex justify-between items-center px-4">
         <h1 className="font-semibold text-md">{column.name}</h1>
-        <ColumnOptions column={column} onCardAdd={() => setIsCardAdding(true)} />
+        <ColumnOptions
+          column={column}
+          onCardAdd={() => setIsCardAdding(true)}
+        />
       </div>
       <Droppable droppableId={column.id}>
         {(provided) => (

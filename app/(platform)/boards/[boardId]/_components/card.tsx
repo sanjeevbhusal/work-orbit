@@ -14,6 +14,8 @@ interface CardProps {
 function Card({ card, index }: CardProps) {
   const [openCardDetails, setOpenCardDetails] = useState(false);
 
+  console.log('index', index);
+
   return (
     <div>
       <Draggable draggableId={card.id} index={index}>
@@ -30,7 +32,11 @@ function Card({ card, index }: CardProps) {
           </div>
         )}
       </Draggable>
-      <CardDetails card={card} open={openCardDetails} onOpenChange={(open) => setOpenCardDetails(open)} />
+      <CardDetails
+        card={card}
+        open={openCardDetails}
+        onOpenChange={(open) => setOpenCardDetails(open)}
+      />
     </div>
   );
 }
