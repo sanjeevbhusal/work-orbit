@@ -14,7 +14,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -37,7 +36,8 @@ interface ColumnOptionsProps {
 }
 
 function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
-  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
+    useState(false);
   const [isDeletingColumn, setIsDeletingColumn] = useState(false);
   const [isEditingColumn, setIsEditingColumn] = useState(false);
   const [showActivityModal, setShowActivityModal] = useState(false);
@@ -60,6 +60,19 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
       setIsDeletingColumn(false);
     }
   }
+
+  async function copyColumn() {
+    try {
+      await axios.post(`/api/column/${column.id}/copy`);
+      router.refresh();
+    } catch (error) {
+      toast({
+        description: 'Something went wrong while copying the column',
+        variant: 'destructive',
+      });
+    }
+  }
+
   return (
     <div>
       <DropdownMenu>
@@ -71,16 +84,25 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
         <DropdownMenuContent className="w-64">
           <DropdownMenuLabel className="text-center">Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer" onClick={() => setShowActivityModal(true)}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => setShowActivityModal(true)}
+          >
             View Activity
           </DropdownMenuItem>
 
-          <DropdownMenuItem className="cursor-pointer" onClick={() => setIsEditingColumn(true)}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => setIsEditingColumn(true)}
+          >
             Edit Column
           </DropdownMenuItem>
 
           <DropdownMenuItem className="cursor-pointer" onClick={onCardAdd}>
             Add Card
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={copyColumn}>
+            Copy Column
           </DropdownMenuItem>
           <DropdownMenuItem
             className="cursor-pointer text-red-500 focus:text-red-500"
@@ -90,23 +112,35 @@ function ColumnOptions({ column, onCardAdd }: ColumnOptionsProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AlertDialog open={showDeleteConfirmationModal} onOpenChange={(open) => setShowDeleteConfirmationModal(open)}>
+      <AlertDialog
+        open={showDeleteConfirmationModal}
+        onOpenChange={(open) => setShowDeleteConfirmationModal(open)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              Deleting the column will also delete all the cards inside it. This action cannot be reversed.
+              Deleting the column will also delete all the cards inside it. This
+              action cannot be reversed.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={deleteColumn}>
-              {isDeletingColumn ? <Loader2 className="animate-spin" /> : 'Continue'}
+              {isDeletingColumn ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                'Continue'
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <EditColumn column={column} open={isEditingColumn} setOpen={(open) => setIsEditingColumn(open)} />
+      <EditColumn
+        column={column}
+        open={isEditingColumn}
+        setOpen={(open) => setIsEditingColumn(open)}
+      />
       <ColumnActivityModal
         open={showActivityModal}
         onOpenChange={(open) => setShowActivityModal(open)}

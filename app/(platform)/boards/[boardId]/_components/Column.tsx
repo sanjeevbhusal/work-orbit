@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
 import { ColumnWithCards } from '@/lib/types';
-import { Card as CardType } from '@prisma/client';
 
 import { AddCard } from './add-card';
 import { Card } from './card';
